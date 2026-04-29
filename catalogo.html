@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo | Maquinas Sanmartino</title>
+    <meta name="description" content="Catálogo completo de equipamiento para gimnasios. Líneas ProLine, Max, Palanca, Aeróbica, Hogar, Funcional, Aire Libre y Accesorios.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --black: #080808; --dark: #101010; --card: #181818; --card2: #1e1e1e;
+            --orange: #FF6600; --orange-light: #FF8833; --orange-dim: rgba(255,102,0,0.12);
+            --white: #ffffff; --gray: #777777; --light: #cccccc;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; }
+
+        /* ─── SCROLL PROGRESS ─── */
+        #progress-bar { position: fixed; top: 0; left: 0; height: 3px; z-index: 9999; background: linear-gradient(90deg, var(--orange), #FF3300); width: 0%; transition: width 0.1s linear; box-shadow: 0 0 8px var(--orange); }
+
+        /* ─── NAV ─── */
+        nav { position: fixed; top: 3px; left: 0; right: 0; z-index: 1000; padding: 0.7rem 2rem; display: flex; justify-content: space-between; align-items: center; background: rgba(8,8,8,0.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,102,0,0.18); transition: box-shadow 0.3s; }
+        nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.7); }
+        .nav-brand { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; }
+        .nav-logo-img { height: 44px; width: auto; object-fit: contain; }
+        .nav-brand-text { display: flex; align-items: baseline; gap: 0.45rem; }
+        .nav-brand-top { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; color: #aaaaaa; white-space: nowrap; }
+        .nav-brand-bottom { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.2rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--orange); white-space: nowrap; }
+        .nav-links { display: flex; gap: 1.8rem; list-style: none; align-items: center; }
+        .nav-links a { color: var(--light); text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s; position: relative; padding-bottom: 3px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s; }
+        .nav-links a:hover { color: var(--orange); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta { background: var(--orange) !important; color: var(--black) !important; padding: 0.6rem 1.6rem; border-radius: 6px; font-weight: 800 !important; font-size: 0.8rem !important; letter-spacing: 0.5px !important; transition: all 0.3s !important; }
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover { background: var(--orange-light) !important; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,102,0,0.4) !important; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+        .hamburger span { width: 24px; height: 2px; background: var(--white); display: block; border-radius: 2px; transition: all 0.3s; }
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(8,8,8,0.97); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a { color: var(--white); text-decoration: none; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: color 0.3s; }
+        .mobile-menu a:hover { color: var(--orange); }
+        .mobile-menu .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--white); font-size: 2rem; cursor: pointer; }
+
+        /* ─── HERO CATÁLOGO ─── */
+        .cat-hero {
+            padding: 9rem 2rem 5.5rem;
+            background: radial-gradient(ellipse at 60% 0%, rgba(255,102,0,0.09) 0%, transparent 60%),
+                        radial-gradient(ellipse at 10% 70%, rgba(255,102,0,0.04) 0%, transparent 50%);
+            position: relative;
+        }
+        .cat-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--black));
+            pointer-events: none;
+        }
+        .cat-hero-inner { max-width: 1200px; margin: 0 auto; }
+        .cat-hero h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 900; text-transform: uppercase; line-height: 1.05; margin-bottom: 1rem; }
+        .cat-hero h1 span { color: var(--orange); }
+        .cat-hero p { color: var(--light); font-size: 1rem; font-weight: 300; max-width: 520px; line-height: 1.8; margin-bottom: 2rem; }
+
+        /* ─── SIDEBAR NAV ─── */
+        .cat-layout { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 6rem; display: grid; grid-template-columns: 190px 1fr; gap: 4rem; align-items: start; }
+        .cat-sidebar { position: sticky; top: 90px; }
+        .cat-sidebar-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gray); margin-bottom: 1.3rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .cat-sidebar a { display: flex; align-items: center; gap: 0.65rem; padding: 0.58rem 0.85rem; text-decoration: none; color: #505050; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.2px; transition: all 0.2s; border-left: 2px solid transparent; margin-bottom: 0.15rem; border-radius: 0 6px 6px 0; }
+        .cat-sidebar a:hover { color: var(--light); border-left-color: rgba(255,102,0,0.3); background: rgba(255,255,255,0.03); }
+        .cat-sidebar a.active { color: var(--orange); border-left-color: var(--orange); background: rgba(255,102,0,0.08); font-weight: 700; }
+        .cat-sidebar a svg { width: 14px; height: 14px; stroke: currentColor; fill: none; flex-shrink: 0; opacity: 0.7; }
+        .cat-sidebar a.active svg { opacity: 1; }
+        .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gray); font-size: 0.75rem; text-decoration: none; margin-bottom: 1rem; transition: color 0.3s; }
+        .back-link:hover { color: var(--orange); }
+
+        /* ─── SECCIÓN LÍNEA ─── */
+        .cat-section { margin-bottom: 5rem; scroll-margin-top: 100px; }
+        .cat-section-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,102,0,0.12); }
+        .cat-section-icon { width: 56px; height: 56px; background: var(--orange-dim); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(255,102,0,0.2); }
+        .cat-section-icon svg { width: 28px; height: 28px; stroke: var(--orange); fill: none; }
+        .cat-section-tag { font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); margin-bottom: 0.3rem; }
+        .cat-section-title { font-size: 1.9rem; font-weight: 900; text-transform: uppercase; }
+        .cat-section-desc { color: var(--light); font-size: 0.9rem; line-height: 1.8; font-weight: 300; margin-bottom: 2rem; max-width: 680px; }
+
+        /* ─── GRILLA DE PRODUCTOS ─── */
+        .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+        .cat-item {
+            background: var(--card); border-radius: 14px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        .cat-item:hover { border-color: var(--orange); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(255,102,0,0.12); }
+        .cat-item-img { height: 180px; overflow: hidden; background: linear-gradient(135deg, #1c1c1c, #252525); display: flex; align-items: center; justify-content: center; position: relative; }
+        .cat-item-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s, filter 0.4s; filter: brightness(0.88) saturate(0.9); }
+        .cat-item:hover .cat-item-img img { transform: scale(1.07); filter: brightness(1) saturate(1.1); }
+        .cat-item-img-icon { width: 72px; height: 72px; stroke: rgba(255,102,0,0.4); fill: none; transition: stroke 0.3s; }
+        .cat-item:hover .cat-item-img-icon { stroke: rgba(255,102,0,0.75); }
+        .cat-item-body { padding: 1.1rem 1.2rem; }
+        .cat-item-body h4 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.4rem; }
+        .cat-item-body p { color: var(--gray); font-size: 0.76rem; line-height: 1.6; }
+
+        /* ─── TABLA DE CARACTERÍSTICAS ─── */
+        .cat-features { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1.8rem; }
+        .cat-feature { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.45rem 0.95rem; background: rgba(255,102,0,0.07); border: 1px solid rgba(255,102,0,0.15); border-radius: 100px; font-size: 0.73rem; font-weight: 600; color: var(--light); transition: background 0.2s, border-color 0.2s; }
+        .cat-feature:hover { background: rgba(255,102,0,0.13); border-color: rgba(255,102,0,0.28); }
+        .cat-feature svg { width: 12px; height: 12px; stroke: var(--orange); fill: none; flex-shrink: 0; }
+
+        /* ─── BOTÓN CTA CATÁLOGO ─── */
+        .btn-primary { background: linear-gradient(135deg, var(--orange), #FF4400); color: var(--black); padding: 0.9rem 2rem; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; position: relative; overflow: hidden; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(255,102,0,0.45); }
+        .btn-secondary { background: transparent; color: var(--white); padding: 0.9rem 2rem; border: 2px solid rgba(255,255,255,0.2); border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
+        .btn-secondary:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-3px); }
+        .cat-cta { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        /* ─── DIVIDER ─── */
+        .cat-divider { height: 1px; background: linear-gradient(90deg, var(--orange), transparent); margin-bottom: 5rem; opacity: 0.2; }
+
+        /* ─── FOOTER ─── */
+        footer { background: #040404; padding: 2.5rem 2rem; border-top: 1px solid rgba(255,102,0,0.15); }
+        .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+        .footer-logo-img { height: 38px; width: auto; object-fit: contain; opacity: 0.9; }
+        .footer-copy { color: var(--gray); font-size: 0.72rem; }
+
+        /* ─── REVEAL ─── */
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) { .cat-layout { grid-template-columns: 1fr; gap: 2rem; } .cat-sidebar { position: static; display: flex; flex-wrap: wrap; gap: 0.4rem; } .cat-sidebar-label { width: 100%; } .cat-sidebar a { border-left: none; border-radius: 100px; border: 1px solid rgba(255,255,255,0.08); padding: 0.4rem 0.9rem; } .cat-sidebar a.active { border-color: var(--orange); } }
+        @media (max-width: 768px) { .nav-links { display: none; } .hamburger { display: flex; } .cat-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 480px) { .cat-grid { grid-template-columns: 1fr; } nav { padding: 0.7rem 1rem; } }
+    </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+    <button class="close-btn" onclick="toggleMenu()">✕</button>
+    <a href="index.html#nosotros" onclick="toggleMenu()">Nosotros</a>
+    <a href="#" onclick="toggleMenu()">Catálogo</a>
+    <a href="index.html#testimonios" onclick="toggleMenu()">Testimonios</a>
+    <a href="index.html#galeria" onclick="toggleMenu()">Galería</a>
+    <a href="index.html#contacto" onclick="toggleMenu()" style="color:var(--orange);">Contactar</a>
+</div>
+
+<nav id="navbar">
+    <a href="index.html" class="nav-brand">
+        <img src="assets/logoNuevoSinFondo.png" alt="Maquinas Sanmartino" class="nav-logo-img">
+        <div class="nav-brand-text">
+            <span class="nav-brand-top">Maquinas</span>
+            <span class="nav-brand-bottom">Sanmartino</span>
+        </div>
+    </a>
+    <ul class="nav-links">
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+        <li><a href="#" style="color:var(--orange);">Catálogo</a></li>
+        <li><a href="index.html#testimonios">Testimonios</a></li>
+        <li><a href="index.html#galeria">Galería</a></li>
+        <li><a href="index.html#contacto" class="nav-cta">Contactar</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menú">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- HERO -->
+<div class="cat-hero">
+    <div class="cat-hero-inner">
+        <a href="index.html" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Volver al inicio
+        </a>
+        <h1>Nuestro <span>Catálogo</span></h1>
+        <p>Más de 30 años fabricando equipamiento para gimnasios en Argentina. Conocé cada línea y encontrá el equipo ideal para tu gimnasio.</p>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+            <a href="#proline" class="btn-primary">Ir a ProLine</a>
+            <a href="index.html#contacto" class="btn-secondary">Consultar precio →</a>
+        </div>
+    </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="cat-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="cat-sidebar">
+        <div class="cat-sidebar-label">Líneas</div>
+        <a href="#proline"><svg data-lucide="dumbbell"></svg> ProLine</a>
+        <a href="#max"><svg data-lucide="zap"></svg> Línea Max</a>
+        <a href="#palanca"><svg data-lucide="activity"></svg> A Palanca</a>
+        <a href="#aerobica"><svg data-lucide="bike"></svg> Aeróbica</a>
+        <a href="#hogar"><svg data-lucide="home"></svg> Hogar</a>
+        <a href="#funcional"><svg data-lucide="flame"></svg> Funcional</a>
+        <a href="#aire-libre"><svg data-lucide="sun"></svg> Aire Libre</a>
+        <a href="#accesorios"><svg data-lucide="package"></svg> Accesorios</a>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main>
+
+        <!-- PROLINE -->
+        <section class="cat-section reveal" id="proline">
+            <div class="cat-section-header">
+                <div class="cat-section-icon"><svg data-lucide="dumbbell"></svg></div>
+                <div>
+                    <div class="cat-section-tag">Musculación profesional</div>
+                    <h2 class="cat-section-title">Línea ProLine</h2>
+                </div>
+            </div>
+            <p class="cat-section-desc">Nuestra línea insignia para gimnasios comerciales. Máquinas selectoradas de alta resistencia para trabajar todos los grupos musculares: pecho, espalda, hombros, brazos, piernas y abdominales. Acabado premium con tapizado importado y estructura en acero pintado al horno.</p>
+            <div class="cat-grid">
+                <div class="cat-item" data-product="proline-pecho">
+                    <div class="cat-item-img"><img src="assets/fotos/proline1.jpg" alt="ProLine Pecho"></div>
+                    <div class="cat-item-body"><h4>Pectorales / Hombros</h4><p>Press de pecho, contractor, apertura y elevaciones laterales selectorados.</p></div>
+                </div>
+                <div class="cat-item" data-product="proline-espalda">
+                    <div class="cat-item-img"><img src="assets/fotos/proline2.jpg" alt="ProLine Espalda"></div>
+                    <div class="cat-item-body"><h4>Espalda / Poleas</h4><p>Jalón al pecho, polea baja, remo selectorado y pullover.</p></div>
+                </div>
+                <div class="cat-item" data-product="proline-piernas">
+                    <div class="cat-item-img"><img src="assets/fotos/proline3.jpg" alt="ProLine Piernas"></div>
+                    <div class="cat-item-body"><h4>Piernas / Abdominales</h4><p>Prensa, extensión, curl, aductor, abductor y abdominales selectorados.</p></div>
+                </div>
+            </div>
+            <div class="cat-features">
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Estructura en acero pintado al horno</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Tapizado importado de alta densidad</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Selector de pesos con pasador de acero</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Garantía de fábrica</div>
+            </div>
+            <div class="cat-cta">
+                <a href="index.html#contacto" class="btn-primary">Consultar disponibilidad</a>
+            </div>
+        </section>
+        <div class="cat-divider"></div>
+
+        <!-- MAX -->
+        <section class="cat-section reveal" id="max">
+            <div class="cat-section-header">
+                <div class="cat-section-icon"><svg data-lucide="zap"></svg></div>
+                <div>
+                    <div class="cat-section-tag">Alta resistencia</div>
+                    <h2 class="cat-section-title">Línea Max</h2>
+                </div>
+            </div>
+            <p class="cat-section-desc">Diseñada para uso intensivo en gimnasios de alto rendimiento. Estructura reforzada con caños de mayor calibre, ideal para establecimientos con alto volumen de usuarios y uso continuo durante todo el día.</p>
+            <div class="cat-grid">
+                <div class="cat-item" data-product="max-pecho">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="zap"></svg></div>
+                    <div class="cat-item-body"><h4>Press de Pecho Max</h4><p>Estructura extra-reforzada para cargas máximas con sistema de selector doble.</p></div>
+                </div>
+                <div class="cat-item" data-product="max-jalon">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="zap"></svg></div>
+                    <div class="cat-item-body"><h4>Jalón Max</h4><p>Polea de alta capacidad con cable de acero trenzado y selector de 120 kg.</p></div>
+                </div>
+                <div class="cat-item" data-product="max-prensa">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="zap"></svg></div>
+                    <div class="cat-item-body"><h4>Prensa de Piernas Max</h4><p>Capacidad de hasta 400 kg con guías de teflón y angulación de 45°.</p></div>
+                </div>
+            </div>
+            <div class="cat-features">
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Caños de acero de mayor calibre</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Ideal para uso intensivo</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Mayor capacidad de carga</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Tapizado reforzado doble capa</div>
+            </div>
+            <div class="cat-cta">
+                <a href="index.html#contacto" class="btn-primary">Consultar disponibilidad</a>
+            </div>
+        </section>
+        <div class="cat-divider"></div>
+
+        <!-- PALANCA -->
+        <section class="cat-section reveal" id="palanca">
+            <div class="cat-section-header">
+                <div class="cat-section-icon"><svg data-lucide="activity"></svg></div>
+                <div>
+                    <div class="cat-section-tag">Biomecánica optimizada</div>
+                    <h2 class="cat-section-title">Línea a Palanca</h2>
+                </div>
+            </div>
+            <p class="cat-section-desc">Tecnología de palanca que reproduce movimientos más naturales y seguros, distribuyendo mejor la carga a lo largo de todo el rango de movimiento. Ideal para trabajo con discos olímpicos. Cada máquina trabaja el músculo desde su ángulo de mayor eficiencia.</p>
+            <div class="cat-grid">
+                <div class="cat-item" data-product="palanca-pecho">
+                    <div class="cat-item-img"><img src="assets/fotos/palanca1.jpg" alt="Palanca"></div>
+                    <div class="cat-item-body"><h4>Press de Pecho a Palanca</h4><p>Movimiento convergente que reproduce el patrón natural del pecho.</p></div>
+                </div>
+                <div class="cat-item" data-product="palanca-espalda">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="activity"></svg></div>
+                    <div class="cat-item-body"><h4>Espalda a Palanca</h4><p>Remo y jalón con tecnología de palanca para máxima activación muscular.</p></div>
+                </div>
+                <div class="cat-item" data-product="palanca-piernas">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="activity"></svg></div>
+                    <div class="cat-item-body"><h4>Piernas a Palanca</h4><p>Curl femoral, extensión y sentadilla con biomecánica libre de impacto.</p></div>
+                </div>
+            </div>
+            <div class="cat-features">
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Compatible con discos olímpicos</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Movimiento de arco natural</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Menor stress articular</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Ideal para rehabilitación</div>
+            </div>
+            <div class="cat-cta">
+                <a href="index.html#contacto" class="btn-primary">Consultar disponibilidad</a>
+            </div>
+        </section>
+        <div class="cat-divider"></div>
+
+        <!-- AERÓBICA -->
+        <section class="cat-section reveal" id="aerobica">
+            <div class="cat-section-header">
+                <div class="cat-section-icon"><svg data-lucide="bike"></svg></div>
+                <div>
+                    <div class="cat-section-tag">Cardio &amp; resistencia</div>
+                    <h2 class="cat-section-title">Línea Aeróbica</h2>
+                </div>
+            </div>
+            <p class="cat-section-desc">Todo el equipamiento cardiovascular que necesita tu gimnasio. Cintas de correr con tecnología de amortiguación, bicicletas ergométricas verticales y horizontales, elípticos de bajo impacto y trepadoras hidráulicas.</p>
+            <div class="cat-grid">
+                <div class="cat-item" data-product="aerobica-cintas">
+                    <div class="cat-item-img"><img src="assets/fotos/cardio1.jpg" alt="Cinta de correr"></div>
+                    <div class="cat-item-body"><h4>Cintas de Correr</h4><p>Motor AC silencioso, superficie de amortiguación y panel digital LCD.</p></div>
+                </div>
+                <div class="cat-item" data-product="aerobica-bicicletas">
+                    <div class="cat-item-img"><img src="assets/fotos/cardio2.jpg" alt="Bicicleta ergométrica"></div>
+                    <div class="cat-item-body"><h4>Bicicletas Ergométricas</h4><p>Verticales y horizontales con resistencia magnética y display de calorías.</p></div>
+                </div>
+                <div class="cat-item" data-product="aerobica-elipticos">
+                    <div class="cat-item-img"><img src="assets/fotos/cardio3.jpg" alt="Elíptico"></div>
+                    <div class="cat-item-body"><h4>Elípticos &amp; Trepadoras</h4><p>Bajo impacto articular, movimiento fluido y resistencia regulable.</p></div>
+                </div>
+            </div>
+            <div class="cat-features">
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Panel digital LCD con métricas</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Resistencia magnética silenciosa</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Apto uso comercial continuo</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Servicio técnico disponible</div>
+            </div>
+            <div class="cat-cta">
+                <a href="index.html#contacto" class="btn-primary">Consultar disponibilidad</a>
+            </div>
+        </section>
+        <div class="cat-divider"></div>
+
+        <!-- HOGAR -->
+        <section class="cat-section reveal" id="hogar">
+            <div class="cat-section-header">
+                <div class="cat-section-icon"><svg data-lucide="home"></svg></div>
+                <div>
+                    <div class="cat-section-tag">Entrenamiento en casa</div>
+                    <h2 class="cat-section-title">Línea Hogar</h2>
+                </div>
+            </div>
+            <p class="cat-section-desc">Equipamiento compacto y versátil para entrenar en casa sin resignar calidad. Diseños que optimizan el espacio disponible sin perder la solidez de fabricación que caracteriza a Sanmartino.</p>
+            <div class="cat-grid">
+                <div class="cat-item" data-product="hogar-banco">
+                    <div class="cat-item-img"><img src="assets/fotos/hogar1.jpg" alt="Línea Hogar"></div>
+                    <div class="cat-item-body"><h4>Banco Regulable Hogar</h4><p>Múltiples posiciones, compacto, ideal para combinarlo con mancuernas.</p></div>
+                </div>
+                <div class="cat-item" data-product="hogar-multi">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="home"></svg></div>
+                    <div class="cat-item-body"><h4>Multifuerza Hogar</h4><p>Máquina multifunción que permite trabajar todo el cuerpo en poco espacio.</p></div>
+                </div>
+                <div class="cat-item" data-product="hogar-cardio">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="home"></svg></div>
+                    <div class="cat-item-body"><h4>Bicicleta &amp; Cinta Hogar</h4><p>Versiones compactas de menor tamaño, perfectas para usar en casa.</p></div>
+                </div>
+            </div>
+            <div class="cat-features">
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Diseño compacto ahorra espacio</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Fácil montaje y plegado</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Misma calidad de fabricación</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Precio accesible</div>
+            </div>
+            <div class="cat-cta">
+                <a href="index.html#contacto" class="btn-primary">Consultar disponibilidad</a>
+            </div>
+        </section>
+        <div class="cat-divider"></div>
+
+        <!-- FUNCIONAL -->
+        <section class="cat-section reveal" id="funcional">
+            <div class="cat-section-header">
+                <div class="cat-section-icon"><svg data-lucide="flame"></svg></div>
+                <div>
+                    <div class="cat-section-tag">Entrenamiento funcional</div>
+                    <h2 class="cat-section-title">Funcional &amp; CrossFit</h2>
+                </div>
+            </div>
+            <p class="cat-section-desc">Todo lo que necesita un box de CrossFit o zona funcional: racks, jaulas, mancuernas, kettlebells, discos olímpicos, barras y mucho más. Construido para soportar el uso más exigente.</p>
+            <div class="cat-grid">
+                <div class="cat-item" data-product="funcional-racks">
+                    <div class="cat-item-img"><img src="assets/fotos/funcional1.jpg" alt="Rack funcional"></div>
+                    <div class="cat-item-body"><h4>Racks &amp; Jaulas</h4><p>Racks de sentadilla, jaulas de potencia y torres multifunción.</p></div>
+                </div>
+                <div class="cat-item" data-product="funcional-pesos">
+                    <div class="cat-item-img"><img src="assets/fotos/funcional2.jpg" alt="Pesos libres"></div>
+                    <div class="cat-item-body"><h4>Pesos Libres</h4><p>Mancuernas hexagonales, kettlebells, discos olímpicos y barras.</p></div>
+                </div>
+                <div class="cat-item" data-product="funcional-plataformas">
+                    <div class="cat-item-img"><img src="assets/fotos/funcional3.jpg" alt="Accesorios funcional"></div>
+                    <div class="cat-item-body"><h4>Plataformas &amp; Boxes</h4><p>Plataformas de levantamiento, boxes pliométricos y battle ropes.</p></div>
+                </div>
+            </div>
+            <div class="cat-features">
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Apto para CrossFit y halterofilia</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Barras olímpicas certificadas</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Discos con recubrimiento de goma</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Anclajes a piso disponibles</div>
+            </div>
+            <div class="cat-cta">
+                <a href="index.html#contacto" class="btn-primary">Consultar disponibilidad</a>
+            </div>
+        </section>
+        <div class="cat-divider"></div>
+
+        <!-- AIRE LIBRE -->
+        <section class="cat-section reveal" id="aire-libre">
+            <div class="cat-section-header">
+                <div class="cat-section-icon"><svg data-lucide="sun"></svg></div>
+                <div>
+                    <div class="cat-section-tag">Espacios exteriores</div>
+                    <h2 class="cat-section-title">Aire Libre</h2>
+                </div>
+            </div>
+            <p class="cat-section-desc">Equipamiento outdoor robusto diseñado para resistir la intemperie. Tratamiento anticorrosión, pinturas UV y materiales resistentes para instalación permanente en espacios públicos, condominios, hoteles y parques.</p>
+            <div class="cat-grid">
+                <div class="cat-item" data-product="aire-circuito">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="sun"></svg></div>
+                    <div class="cat-item-body"><h4>Circuito de Parques</h4><p>Módulos de ejercicio para espacios públicos y plazas.</p></div>
+                </div>
+                <div class="cat-item" data-product="aire-outdoor">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="sun"></svg></div>
+                    <div class="cat-item-body"><h4>Equipos Outdoor</h4><p>Máquinas selectoradas con tratamiento anticorrosión para exterior.</p></div>
+                </div>
+                <div class="cat-item" data-product="aire-barras">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="sun"></svg></div>
+                    <div class="cat-item-body"><h4>Juegos de Barras</h4><p>Barras de dominadas, paralelas y estaciones de calistenia outdoor.</p></div>
+                </div>
+            </div>
+            <div class="cat-features">
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Tratamiento anticorrosión</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Pintura UV resistente</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Anclaje al piso incluido</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Apto uso público continuo</div>
+            </div>
+            <div class="cat-cta">
+                <a href="index.html#contacto" class="btn-primary">Consultar disponibilidad</a>
+            </div>
+        </section>
+        <div class="cat-divider"></div>
+
+        <!-- ACCESORIOS -->
+        <section class="cat-section reveal" id="accesorios">
+            <div class="cat-section-header">
+                <div class="cat-section-icon"><svg data-lucide="package"></svg></div>
+                <div>
+                    <div class="cat-section-tag">Complementos</div>
+                    <h2 class="cat-section-title">Accesorios</h2>
+                </div>
+            </div>
+            <p class="cat-section-desc">Todo lo que completa un gimnasio equipado: desde muñequeras y tobilleras hasta espejos, espejos y soportes. Complementá tu equipamiento con accesorios de calidad al mejor precio.</p>
+            <div class="cat-grid">
+                <div class="cat-item" data-product="acc-protecciones">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="package"></svg></div>
+                    <div class="cat-item-body"><h4>Protecciones</h4><p>Muñequeras, tobilleras, fajas lumbares y guantes de entrenamiento.</p></div>
+                </div>
+                <div class="cat-item" data-product="acc-elementos">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="package"></svg></div>
+                    <div class="cat-item-body"><h4>Elementos de Entrenamiento</h4><p>Sogas de saltar, steps, colchonetas, bandas de resistencia y TRX.</p></div>
+                </div>
+                <div class="cat-item" data-product="acc-mobiliario">
+                    <div class="cat-item-img"><svg class="cat-item-img-icon" data-lucide="package"></svg></div>
+                    <div class="cat-item-body"><h4>Mobiliario de Gimnasio</h4><p>Espejos, soportes de discos, porta-mancuernas y bebederos.</p></div>
+                </div>
+            </div>
+            <div class="cat-features">
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Stock permanente disponible</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Precios mayoristas</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Envío junto al equipamiento</div>
+                <div class="cat-feature"><svg data-lucide="check-circle"></svg> Asesoramiento incluido</div>
+            </div>
+            <div class="cat-cta">
+                <a href="index.html#contacto" class="btn-primary">Consultar disponibilidad</a>
+                <a href="https://wa.me/5493584203393?text=Hola!%20Quiero%20consultar%20sobre%20accesorios." target="_blank" class="btn-secondary">WhatsApp →</a>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-inner">
+        <img src="assets/logoNuevoSinFondo.png" alt="Maquinas Sanmartino" class="footer-logo-img">
+        <p class="footer-copy">© 2026 Maquinas Sanmartino · Las Heras 978, Río Cuarto, Córdoba · Fabricación de equipamiento para gimnasios</p>
+    </div>
+</footer>
+
+<script src="assets/shop.js"></script>
+<script>
+    function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        document.getElementById('progress-bar').style.width = (scrolled / maxScroll * 100) + '%';
+        document.getElementById('navbar').classList.toggle('scrolled', scrolled > 50);
+
+        // Highlight sidebar active link
+        const sections = document.querySelectorAll('.cat-section');
+        const sidebarLinks = document.querySelectorAll('.cat-sidebar a');
+        let current = '';
+        sections.forEach(s => { if (window.scrollY >= s.offsetTop - 140) current = s.id; });
+        sidebarLinks.forEach(a => {
+            a.classList.remove('active');
+            if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+        });
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 60); });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    lucide.createIcons();
+</script>
+</body>
+</html>
