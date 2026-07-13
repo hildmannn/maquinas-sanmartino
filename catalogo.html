@@ -204,6 +204,9 @@
         .modal-sub { color: var(--gray); font-size: 0.82rem; text-transform: capitalize; margin-bottom: 1.2rem; }
         .modal-desc { color: var(--light); font-size: 0.9rem; line-height: 1.8; font-weight: 300; margin-bottom: 1.8rem; }
         .modal-desc.vacia { color: var(--gray); font-style: italic; }
+        .modal-specs { margin-bottom: 1.6rem; }
+        .modal-specs-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2px; color: var(--orange); margin-bottom: 0.5rem; }
+        .modal-specs-text { color: var(--light); font-size: 0.85rem; line-height: 1.75; white-space: pre-line; font-weight: 300; }
         .modal-actions { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1.6rem; }
         .modal-actions .btn-primary, .modal-actions .btn-secondary { justify-content: center; width: 100%; }
         @media (max-width: 768px) { .modal { grid-template-columns: 1fr; max-height: 92vh; overflow-y: auto; } .modal-main img { max-height: 40vh; } }
@@ -366,6 +369,10 @@
             <h2 id="modal-title"></h2>
             <div class="modal-sub" id="modal-sub"></div>
             <p class="modal-desc" id="modal-desc"></p>
+            <div class="modal-specs" id="modal-specs" style="display:none;">
+                <h3 class="modal-specs-title">Especificaciones</h3>
+                <p class="modal-specs-text" id="modal-specs-text"></p>
+            </div>
             <div class="modal-actions">
                 <button class="btn-primary" id="modal-add">Agregar al carrito</button>
                 <a class="btn-secondary" id="modal-wa" target="_blank" rel="noopener">Consultar por WhatsApp</a>
@@ -710,6 +717,13 @@
         const desc = document.getElementById('modal-desc');
         if (p.descripcion && p.descripcion.trim()) { desc.textContent = p.descripcion; desc.classList.remove('vacia'); }
         else { desc.textContent = 'Consultanos por WhatsApp y te damos todos los detalles de esta máquina.'; desc.classList.add('vacia'); }
+
+        // Especificaciones (ficha técnica): solo si el producto las tiene.
+        const specs = document.getElementById('modal-specs');
+        if (p.especificaciones && p.especificaciones.trim()) {
+            document.getElementById('modal-specs-text').textContent = p.especificaciones;
+            specs.style.display = 'block';
+        } else { specs.style.display = 'none'; }
 
         // Galería: foto principal + miniaturas de todos los ángulos + flechas si hay varias.
         modalFotos = p.fotos || [];
