@@ -236,7 +236,8 @@
         .cart-remove:hover { color: #e55; }
         .cart-foot { padding: 1.2rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
         .cart-empty { color: var(--gray); font-size: 0.85rem; text-align: center; padding: 2rem 0; }
-        .cart-checkout { width: 100%; justify-content: center; }
+        .cart-checkout { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; background: #25D366; color: #fff; padding: 0.9rem 2rem; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.3s; }
+        .cart-checkout:hover { background: #2de070; transform: translateY(-2px); box-shadow: 0 8px 22px rgba(37,211,102,0.4); }
         .cart-checkout.disabled { opacity: 0.4; pointer-events: none; }
 
         /* ─── FOOTER ─── */
@@ -383,7 +384,7 @@
     </div>
     <div class="cart-items" id="cart-items"></div>
     <div class="cart-foot">
-        <a class="btn-primary cart-checkout" id="cart-checkout" target="_blank" rel="noopener">Pedir presupuesto por WhatsApp</a>
+        <a class="cart-checkout" id="cart-checkout" target="_blank" rel="noopener">Pedir presupuesto por WhatsApp</a>
     </div>
 </aside>
 
@@ -660,6 +661,10 @@
         } else {
             banner.classList.remove('show');
         }
+        // Resaltamos en el sidebar la línea filtrada (o ninguna si es "ver todo").
+        document.querySelectorAll('.cat-sidebar a').forEach((a) => {
+            a.classList.toggle('active', !!filtroCat && a.getAttribute('href') === '#cat-' + filtroCat);
+        });
         // Evitamos que alguna sección quede invisible por la animación de aparición.
         document.querySelectorAll('.cat-section.reveal').forEach((s) => s.classList.add('visible'));
         if (aplicarBusqueda) aplicarBusqueda();
@@ -683,7 +688,8 @@
         const anclas = document.querySelectorAll('.cat-section, .cat-subsection');
         const links = document.querySelectorAll('.cat-sidebar a');
         let actual = '';
-        anclas.forEach((s) => { if (window.scrollY >= s.offsetTop - 140) actual = s.id; });
+        // Ignoramos las secciones ocultas (offsetParent null) para que no "roben" el resaltado.
+        anclas.forEach((s) => { if (s.offsetParent !== null && window.scrollY >= s.offsetTop - 140) actual = s.id; });
         links.forEach((a) => {
             const href = a.getAttribute('href').slice(1);
             const esPadre = actual.startsWith(href + '-'); // ej: cat-linea-proline es padre de cat-linea-proline-piernas
