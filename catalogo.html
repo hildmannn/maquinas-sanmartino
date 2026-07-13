@@ -92,6 +92,12 @@
         .cat-no-results.show { display: block; }
         .cat-no-results strong { color: var(--light); display: block; font-size: 1.05rem; margin-bottom: 0.4rem; }
         .cat-item.hidden, .cat-section.search-hidden, .cat-divider.search-hidden { display: none; }
+        /* Banner de filtro por línea (cuando venís del index) */
+        .cat-filtro { display: none; align-items: center; gap: 1rem; flex-wrap: wrap; background: rgba(255,102,0,0.08); border: 1px solid rgba(255,102,0,0.25); border-radius: 10px; padding: 0.8rem 1.2rem; margin-bottom: 2rem; font-size: 0.85rem; color: var(--light); }
+        .cat-filtro.show { display: flex; }
+        .cat-filtro strong { color: var(--orange); text-transform: uppercase; letter-spacing: 0.5px; }
+        .cat-filtro button { margin-left: auto; background: none; border: 1px solid rgba(255,255,255,0.2); color: var(--light); border-radius: 6px; padding: 0.4rem 0.9rem; font-size: 0.75rem; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: all 0.2s; }
+        .cat-filtro button:hover { border-color: var(--orange); color: var(--orange); }
 
         /* ─── SIDEBAR NAV ─── */
         .cat-layout { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 6rem; display: grid; grid-template-columns: 190px 1fr; gap: 4rem; align-items: start; }
@@ -332,6 +338,12 @@
             Probá con otra palabra, o <a href="index.html#contacto" style="color:var(--orange);">consultanos por WhatsApp</a> y te ayudamos.
         </div>
 
+        <!-- Banner de filtro por línea -->
+        <div class="cat-filtro" id="cat-filtro">
+            Mostrando solo: <strong id="cat-filtro-nombre"></strong>
+            <button type="button" id="cat-filtro-clear">Ver todo el catálogo ✕</button>
+        </div>
+
         <!-- Secciones por categoría (inyectadas por JS) -->
         <div id="cat-content"></div>
     </main>
@@ -420,6 +432,10 @@
     // Todos los productos indexados por código (los llena initCatalogo). Lo usan el modal y el carrito.
     const productosPorCodigo = {};
     const CART_KEY = 'carritoSanmartino';
+
+    // Filtro por línea (cuando llegás desde el index con ?cat=...). null = mostrar todo.
+    let filtroCat = null;
+    let aplicarBusqueda = null; // referencia a la función de filtrado del buscador
 
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 
@@ -521,6 +537,38 @@
         setupBuscador();
         setupReveal();
         setupInteraccion();
+
+        // ─── Filtro por línea ───
+        // Botón "Ver todo el catálogo".
+        document.getElementById('cat-filtro-clear').addEventListener('click', () => {
+            setFiltro(null);
+            history.replaceState(null, '', 'catalogo.html');
+        });
+        // Los links del sidebar filtran por línea (y los subtipos llevan a su grupo dentro de ProLine).
+        sidebar.addEventListener('click', (e) => {
+            const a = e.target.closest('a');
+            if (!a) return;
+            const href = a.getAttribute('href') || '';
+            if (a.classList.contains('cat-sub-link')) {
+                e.preventDefault();
+                setFiltro('linea-proline');
+                const el = document.querySelector(href);
+                if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+            } else if (href.startsWith('#cat-')) {
+                e.preventDefault();
+                setFiltro(href.slice(5));
+                irAlCatalogo();
+            }
+        });
+        // Si venimos del index con ?cat=linea-max, arrancamos filtrados por esa línea.
+        const catParam = new URLSearchParams(location.search).get('cat');
+        if (catParam) { setFiltro(catParam); setTimeout(irAlCatalogo, 120); }
+    }
+
+    // Scrollea al inicio de la grilla del catálogo (debajo del buscador).
+    function irAlCatalogo() {
+        const layout = document.querySelector('.cat-layout');
+        if (layout) window.scrollTo({ top: layout.offsetTop - 70, behavior: 'smooth' });
     }
 
     // ─── Clic en tarjetas: abrir modal o agregar al carrito ───
@@ -561,10 +609,12 @@
 
             // Filtramos y ordenamos dentro de cada grilla (una por categoría o subcategoría).
             grids.forEach((grid) => {
+                const sec = grid.closest('.cat-section');
+                const fueraDeFiltro = filtroCat && sec.id !== 'cat-' + filtroCat;
                 const propias = items.filter((it) => it.grid === grid);
                 const visibles = [];
                 propias.forEach((it) => {
-                    const match = !q || it.codigo.includes(q) || it.nombre.includes(q);
+                    const match = !fueraDeFiltro && (!q || it.codigo.includes(q) || it.nombre.includes(q));
                     it.el.classList.toggle('hidden', !match);
                     if (!match) return;
                     let rank = 0;
@@ -580,22 +630,39 @@
                     visibles.sort((a, b) => (a.rank - b.rank) || a.it.codigo.localeCompare(b.it.codigo, undefined, { numeric: true }));
                     visibles.forEach((v) => grid.appendChild(v.it.el));
                 }
-                // Ocultamos la subsección (si la grilla está dentro de una) cuando queda vacía.
                 const sub = grid.closest('.cat-subsection');
                 if (sub) sub.classList.toggle('search-hidden', visibles.length === 0);
                 total += visibles.length;
             });
 
-            // Ocultamos secciones enteras sin ninguna coincidencia.
+            // Ocultamos las secciones fuera del filtro o sin ninguna coincidencia.
             secciones.forEach((sec) => {
-                sec.classList.toggle('search-hidden', sec.querySelectorAll('.cat-item:not(.hidden)').length === 0);
+                const fueraDeFiltro = filtroCat && sec.id !== 'cat-' + filtroCat;
+                sec.classList.toggle('search-hidden', fueraDeFiltro || sec.querySelectorAll('.cat-item:not(.hidden)').length === 0);
             });
 
             noRes.classList.toggle('show', total === 0);
         }
 
+        aplicarBusqueda = aplicar; // la exponemos para que el filtro por línea la invoque
         input.addEventListener('input', aplicar);
         clearBtn.addEventListener('click', () => { input.value = ''; aplicar(); input.focus(); });
+    }
+
+    // Activa/limpia el filtro por línea y actualiza el banner.
+    function setFiltro(slugCat) {
+        filtroCat = slugCat || null;
+        const banner = document.getElementById('cat-filtro');
+        if (filtroCat) {
+            const info = CATS.find((c) => slug(c.key) === filtroCat);
+            document.getElementById('cat-filtro-nombre').textContent = info ? info.nombre : filtroCat;
+            banner.classList.add('show');
+        } else {
+            banner.classList.remove('show');
+        }
+        // Evitamos que alguna sección quede invisible por la animación de aparición.
+        document.querySelectorAll('.cat-section.reveal').forEach((s) => s.classList.add('visible'));
+        if (aplicarBusqueda) aplicarBusqueda();
     }
 
     // ─── Animación de aparición + sidebar activo al hacer scroll ───
@@ -767,6 +834,7 @@
     document.getElementById('cart-overlay').addEventListener('click', cerrarCarrito);
 
     renderCart(); // pinta el carrito guardado de visitas anteriores
+    if (location.hash === '#carrito') abrirCarrito(); // llegaste desde el ícono de carrito del index
     initCatalogo();
 </script>
 </body>
