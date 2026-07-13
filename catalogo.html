@@ -26,7 +26,7 @@
         nav { position: fixed; top: 3px; left: 0; right: 0; z-index: 1000; padding: 0.7rem 2rem; display: flex; justify-content: space-between; align-items: center; background: rgba(8,8,8,0.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,102,0,0.18); transition: box-shadow 0.3s; }
         nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.7); }
         .nav-brand { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; }
-        .nav-logo-img { height: 44px; width: auto; object-fit: contain; }
+        .nav-logo-img { height: 46px; width: 46px; border-radius: 50%; background: #000 url('assets/logo-sanmartino.jpg') center / 122% no-repeat; flex-shrink: 0; }
         .nav-brand-text { display: flex; align-items: baseline; gap: 0.45rem; }
         .nav-brand-top { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; color: #aaaaaa; white-space: nowrap; }
         .nav-brand-bottom { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.2rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--orange); white-space: nowrap; }
@@ -175,12 +175,12 @@
         /* ─── MODAL DETALLE ─── */
         .modal-overlay { position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; padding: 1.5rem; backdrop-filter: blur(4px); }
         .modal-overlay.open { display: flex; }
-        .modal { background: var(--card); border: 1px solid rgba(255,102,0,0.2); border-radius: 18px; max-width: 900px; width: 100%; max-height: 90vh; overflow: hidden; display: grid; grid-template-columns: 1.1fr 1fr; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.7); }
+        .modal { background: var(--card); border: 1px solid rgba(255,102,0,0.2); border-radius: 18px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; overflow-x: hidden; display: grid; grid-template-columns: 1.1fr 1fr; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.7); }
         .modal-close { position: absolute; top: 1rem; right: 1rem; z-index: 3; width: 38px; height: 38px; border-radius: 50%; border: none; background: rgba(0,0,0,0.55); color: #fff; font-size: 1.3rem; cursor: pointer; transition: background 0.2s; }
         .modal-close:hover { background: var(--orange); color: #000; }
         .modal-gallery { background: #0d0d0d; display: flex; flex-direction: column; }
         .modal-main { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 300px; position: relative; }
-        .modal-main img { width: 100%; height: 100%; max-height: 62vh; object-fit: contain; }
+        .modal-main img { width: 100%; height: 100%; max-height: 56vh; object-fit: contain; }
         .modal-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; border: none; background: rgba(0,0,0,0.55); color: #fff; font-size: 1.6rem; line-height: 1; cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 2; }
         .modal-nav.prev { left: 0.7rem; }
         .modal-nav.next { right: 0.7rem; }
@@ -191,12 +191,12 @@
         .modal-thumb { width: 58px; height: 58px; border-radius: 8px; overflow: hidden; cursor: pointer; border: 2px solid transparent; flex-shrink: 0; background: var(--card2); }
         .modal-thumb.active { border-color: var(--orange); }
         .modal-thumb img { width: 100%; height: 100%; object-fit: cover; }
-        .modal-info { padding: 2.2rem 2rem; overflow-y: auto; display: flex; flex-direction: column; }
-        .modal-info h2 { font-size: 1.35rem; font-weight: 900; text-transform: uppercase; line-height: 1.25; margin: 0.5rem 0 0.6rem; }
+        .modal-info { padding: 2.2rem 2rem; display: flex; flex-direction: column; min-width: 0; }
+        .modal-info h2 { font-size: 1.35rem; font-weight: 900; text-transform: uppercase; line-height: 1.25; margin: 0.5rem 0 0.6rem; overflow-wrap: anywhere; }
         .modal-sub { color: var(--gray); font-size: 0.82rem; text-transform: capitalize; margin-bottom: 1.2rem; }
         .modal-desc { color: var(--light); font-size: 0.9rem; line-height: 1.8; font-weight: 300; margin-bottom: 1.8rem; }
         .modal-desc.vacia { color: var(--gray); font-style: italic; }
-        .modal-actions { display: flex; flex-direction: column; gap: 0.7rem; margin-top: auto; }
+        .modal-actions { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1.6rem; }
         .modal-actions .btn-primary, .modal-actions .btn-secondary { justify-content: center; width: 100%; }
         @media (max-width: 768px) { .modal { grid-template-columns: 1fr; max-height: 92vh; overflow-y: auto; } .modal-main img { max-height: 40vh; } }
 
@@ -236,7 +236,7 @@
         /* ─── FOOTER ─── */
         footer { background: #040404; padding: 2.5rem 2rem; border-top: 1px solid rgba(255,102,0,0.15); }
         .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
-        .footer-logo-img { height: 38px; width: auto; object-fit: contain; opacity: 0.9; }
+        .footer-logo-img { height: 42px; width: 42px; border-radius: 50%; background: #000 url('assets/logo-sanmartino.jpg') center / 122% no-repeat; opacity: 0.95; }
         .footer-copy { color: var(--gray); font-size: 0.72rem; }
 
         /* ─── REVEAL ─── */
@@ -257,14 +257,14 @@
     <button class="close-btn" onclick="toggleMenu()">✕</button>
     <a href="index.html#nosotros" onclick="toggleMenu()">Nosotros</a>
     <a href="#" onclick="toggleMenu()">Catálogo</a>
-    <a href="index.html#testimonios" onclick="toggleMenu()">Testimonios</a>
     <a href="index.html#galeria" onclick="toggleMenu()">Galería</a>
-    <a href="index.html#contacto" onclick="toggleMenu()" style="color:var(--orange);">Contactar</a>
+    <a href="index.html#testimonios" onclick="toggleMenu()">Testimonios</a>
+    <a href="index.html#contacto" onclick="toggleMenu()">Contactar</a>
 </div>
 
 <nav id="navbar">
     <a href="index.html" class="nav-brand">
-        <img src="assets/logoNuevoSinFondo.png" alt="Maquinas Sanmartino" class="nav-logo-img">
+        <span class="nav-logo-img" role="img" aria-label="Maquinas Sanmartino"></span>
         <div class="nav-brand-text">
             <span class="nav-brand-top">Maquinas</span>
             <span class="nav-brand-bottom">Sanmartino</span>
@@ -273,9 +273,9 @@
     <ul class="nav-links">
         <li><a href="index.html#nosotros">Nosotros</a></li>
         <li><a href="#" style="color:var(--orange);">Catálogo</a></li>
-        <li><a href="index.html#testimonios">Testimonios</a></li>
         <li><a href="index.html#galeria">Galería</a></li>
-        <li><a href="index.html#contacto" class="nav-cta">Contactar</a></li>
+        <li><a href="index.html#testimonios">Testimonios</a></li>
+        <li><a href="index.html#contacto">Contactar</a></li>
     </ul>
     <div style="display:flex; align-items:center; gap:1rem;">
         <button class="nav-cart" id="cart-fab" aria-label="Ver pedido" title="Tu pedido">
@@ -383,7 +383,7 @@
 <!-- FOOTER -->
 <footer>
     <div class="footer-inner">
-        <img src="assets/logoNuevoSinFondo.png" alt="Maquinas Sanmartino" class="footer-logo-img">
+        <span class="footer-logo-img" role="img" aria-label="Maquinas Sanmartino"></span>
         <p class="footer-copy">© 2026 Maquinas Sanmartino · Las Heras 978, Río Cuarto, Córdoba · Fabricación de equipamiento para gimnasios</p>
     </div>
 </footer>
