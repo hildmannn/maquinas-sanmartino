@@ -670,12 +670,20 @@
         "postalCode": "5800",
         "addressCountry": "AR"
       },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-        "opens": "08:30",
-        "closes": "19:30"
-      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+          "opens": "09:00",
+          "closes": "13:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+          "opens": "15:00",
+          "closes": "18:00"
+        }
+      ],
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "8.8",
@@ -684,8 +692,7 @@
       },
       "sameAs": [
         "https://www.instagram.com/maquinassanmartino/",
-        "https://www.facebook.com/maquinassanmartino.srl/",
-        "https://listado.mercadolibre.com.ar/maquinas-gimnasio-sanmartino"
+        "https://www.facebook.com/maquinassanmartino.srl/"
       ]
     }
     </script>
@@ -699,7 +706,7 @@
 <div class="mobile-menu" id="mobileMenu">
     <button class="close-btn" onclick="toggleMenu()">✕</button>
     <a href="#nosotros" onclick="toggleMenu()">Nosotros</a>
-    <a href="catalogo.html" onclick="toggleMenu();trackCatalog()">Catálogo</a>
+    <a href="#productos" onclick="toggleMenu()">Catálogo</a>
     <a href="#testimonios" onclick="toggleMenu()">Testimonios</a>
     <a href="#galeria" onclick="toggleMenu()">Galería</a>
     <a href="#contacto" onclick="toggleMenu()" style="color:var(--orange);">Contactar</a>
@@ -716,7 +723,7 @@
     </a>
     <ul class="nav-links">
         <li><a href="#nosotros">Nosotros</a></li>
-        <li><a href="catalogo.html" onclick="trackCatalog()">Catálogo</a></li>
+        <li><a href="#productos">Catálogo</a></li>
         <li><a href="#testimonios">Testimonios</a></li>
         <li><a href="#galeria">Galería</a></li>
         <li><a href="#contacto" class="nav-cta">Contactar</a></li>
@@ -744,7 +751,7 @@
                 <span class="badge">Envíos a todo el país</span>
             </div>
             <h1>Armá tu gym con máquinas que <span class="orange-text">duran toda la vida</span></h1>
-            <p>Fabricantes directos en Córdoba. Sin intermediarios, sin revendedores. Más de 30 años haciendo máquinas que resisten 8 horas diarias de uso en los gimnasios más exigentes del país.</p>
+            <p>Fabricantes directos en Córdoba. Sin intermediarios, sin revendedores. Más de 30 años haciendo máquinas que te acompañan toda la vida, usadas en los gimnasios más exigentes del país.</p>
             <div class="hero-btns">
                 <a href="https://wa.me/5493584203393?text=Hola!%20Me%20interesa%20conocer%20m%C3%A1s%20sobre%20su%20equipamiento." target="_blank" class="btn-whatsapp" onclick="trackWA('hero-principal')">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -942,7 +949,7 @@
                     <h3>¿Por qué elegirnos?</h3>
                     <p>Porque cuando comprás en Sanmartino, comprás directo al fabricante. Eso significa mejor precio, mejor garantía y alguien que sabe exactamente qué hay dentro de cada máquina si algo falla. Llevamos 30 años equipando gimnasios en todo el país — y nuestros clientes vuelven.</p>
                     <span class="about-location">📍 Las Heras 978 · Río Cuarto, Córdoba</span>
-                    <p style="margin-top:0.7rem; color:var(--orange); font-size:0.78rem;">🕐 Lun a Vie: 8:30–12:30 / 15:30–19:30</p>
+                    <p style="margin-top:0.7rem; color:var(--orange); font-size:0.78rem;">🕐 Lun a Vie: 9–13 / 15–18 hs</p>
                 </div>
             </div>
         </div>
@@ -1287,7 +1294,7 @@
                 </div>
                 <div class="contact-item reveal" style="cursor:default;">
                     <span class="ci-icon"><svg class="icon-md" data-lucide="clock"></svg></span>
-                    <div><h4>Horario</h4><p>Lunes a Viernes: 8:30–12:30 / 15:30–19:30</p></div>
+                    <div><h4>Horario</h4><p>Lunes a Viernes: 9 a 13 y 15 a 18 hs</p></div>
                 </div>
             </div>
             <div class="reveal-right">
@@ -1303,10 +1310,6 @@
                     <a href="https://www.facebook.com/maquinassanmartino.srl/" target="_blank" class="social-btn" style="display:flex;align-items:center;justify-content:center;gap:0.4rem;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                         Facebook
-                    </a>
-                    <a href="https://listado.mercadolibre.com.ar/maquinas-gimnasio-sanmartino" target="_blank" class="social-btn" style="display:flex;align-items:center;justify-content:center;gap:0.4rem;">
-                        <img src="assets/mercado-libre.svg" height="17" alt="MercadoLibre" style="display:block;">
-                        MercadoLibre
                     </a>
                 </div>
             </div>
@@ -1327,9 +1330,6 @@
             </a>
             <a href="https://wa.me/5493584203393" target="_blank" title="WhatsApp">
                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            </a>
-            <a href="https://listado.mercadolibre.com.ar/maquinas-gimnasio-sanmartino" target="_blank" title="MercadoLibre">
-                <img src="assets/mercado-libre.svg" height="19" alt="MercadoLibre">
             </a>
         </div>
         <p class="footer-copy">© 2026 Maquinas Sanmartino · Las Heras 978, Río Cuarto, Córdoba, Argentina · Fabricación de equipamiento para gimnasios</p>
