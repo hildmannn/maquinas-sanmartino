@@ -30,6 +30,8 @@
         .nav-brand-text { display: flex; align-items: baseline; gap: 0.45rem; }
         .nav-brand-top { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; color: #aaaaaa; white-space: nowrap; }
         .nav-brand-bottom { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.2rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--orange); white-space: nowrap; }
+        .nav-brand-img { height: 34px; width: auto; max-width: 210px; object-fit: contain; display: block; }
+        @media (max-width: 600px) { .nav-brand-img { height: 27px; max-width: 46vw; } }
         .nav-links { display: flex; gap: 1.8rem; list-style: none; align-items: center; }
         .nav-links a { color: var(--light); text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s; position: relative; padding-bottom: 3px; }
         .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--orange); transition: width 0.3s; }
@@ -272,10 +274,7 @@
 <nav id="navbar">
     <a href="index.html" class="nav-brand">
         <span class="nav-logo-img" role="img" aria-label="Maquinas Sanmartino"></span>
-        <div class="nav-brand-text">
-            <span class="nav-brand-top">Maquinas</span>
-            <span class="nav-brand-bottom">Sanmartino</span>
-        </div>
+        <img src="assets/nombre-header.png" alt="Maquinas Sanmartino" class="nav-brand-img">
     </a>
     <ul class="nav-links">
         <li><a href="index.html#nosotros">Nosotros</a></li>
