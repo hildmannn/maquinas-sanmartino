@@ -105,16 +105,16 @@
         .cat-layout { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 6rem; display: grid; grid-template-columns: 190px 1fr; gap: 4rem; align-items: start; }
         .cat-sidebar { position: sticky; top: 90px; }
         .cat-sidebar-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gray); margin-bottom: 1.3rem; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
-        .cat-sidebar a { display: flex; align-items: center; gap: 0.65rem; padding: 0.58rem 0.85rem; text-decoration: none; color: #505050; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.2px; transition: all 0.2s; border-left: 2px solid transparent; margin-bottom: 0.15rem; border-radius: 0 6px 6px 0; }
-        .cat-sidebar a:hover { color: var(--light); border-left-color: rgba(255,102,0,0.3); background: rgba(255,255,255,0.03); }
+        .cat-sidebar a { display: flex; align-items: center; gap: 0.65rem; padding: 0.58rem 0.85rem; text-decoration: none; color: #b0b0b0; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.2px; transition: all 0.2s; border-left: 2px solid transparent; margin-bottom: 0.15rem; border-radius: 0 6px 6px 0; transform-origin: left center; }
+        .cat-sidebar a:hover { color: var(--white); border-left-color: rgba(255,102,0,0.3); background: rgba(255,255,255,0.03); transform: scale(1.06); }
         .cat-sidebar a.active { color: var(--orange); border-left-color: var(--orange); background: rgba(255,102,0,0.08); font-weight: 700; }
         .cat-sidebar a svg { width: 14px; height: 14px; stroke: currentColor; fill: none; flex-shrink: 0; opacity: 0.7; }
         .cat-sidebar a.active svg { opacity: 1; }
         .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gray); font-size: 0.75rem; text-decoration: none; margin-bottom: 1rem; transition: color 0.3s; }
         .back-link:hover { color: var(--orange); }
         /* Sub-links de subcategorías (ProLine) en el sidebar */
-        .cat-sidebar a.cat-sub-link { padding-left: 1.9rem; font-size: 0.7rem; color: #454545; }
-        .cat-sidebar a.cat-sub-link:hover { color: var(--light); }
+        .cat-sidebar a.cat-sub-link { padding-left: 1.9rem; font-size: 0.7rem; color: #999999; }
+        .cat-sidebar a.cat-sub-link:hover { color: var(--white); }
         .cat-sidebar a.cat-sub-link.active { color: var(--orange); }
         /* Subsecciones dentro de una categoría (ProLine dividido por grupo muscular) */
         .cat-subsection { margin-bottom: 2.6rem; scroll-margin-top: 100px; }
@@ -148,7 +148,7 @@
         .cat-item-body { padding: 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; }
         .cat-item-code { align-self: flex-start; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px; color: var(--orange); background: rgba(255,102,0,0.1); border: 1px solid rgba(255,102,0,0.22); padding: 0.12rem 0.5rem; border-radius: 5px; margin-bottom: 0.5rem; }
         .cat-item-body h4 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.3rem; line-height: 1.35; }
-        .cat-item-sub { color: var(--gray); font-size: 0.72rem; text-transform: capitalize; }
+        .cat-item-sub { color: var(--light); font-size: 0.72rem; text-transform: capitalize; }
         .cat-item-consultar { margin-top: auto; padding-top: 0.9rem; color: var(--orange); font-size: 0.73rem; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 0.3rem; transition: gap 0.25s; }
         .cat-item:hover .cat-item-consultar { gap: 0.55rem; }
 
