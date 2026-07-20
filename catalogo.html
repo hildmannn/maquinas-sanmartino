@@ -117,7 +117,22 @@
         .mobile-menu .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--white); font-size: 2rem; cursor: pointer; }
 
         /* ─── HERO ─── */
-        .cat-hero { padding: 8rem 3rem 2.5rem; max-width: 1680px; margin: 0 auto; }
+        .cat-hero {
+            padding: 8rem 3rem 2.5rem; max-width: 1680px; margin: 0 auto;
+            position: relative; overflow: hidden;
+            background: radial-gradient(ellipse at 72% 0%, rgba(255,102,0,0.10) 0%, transparent 55%),
+                        radial-gradient(ellipse at 8% 95%, rgba(255,102,0,0.05) 0%, transparent 50%);
+        }
+        .cat-hero > *:not(.particles) { position: relative; z-index: 1; }
+        /* Fondo dinámico: burbujas naranjas flotando (mismo efecto que el index) */
+        .cat-hero .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+        .cat-hero .particle { position: absolute; border-radius: 50%; background: rgba(255,102,0,0.15); animation: float-particle linear infinite; }
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+        }
         .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gray); font-size: 0.75rem; text-decoration: none; margin-bottom: 1.4rem; transition: color 0.2s; }
         .back-link:hover { color: var(--orange); }
         .cat-hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.03; margin-bottom: 0.9rem; }
@@ -421,6 +436,7 @@
 
 <!-- HERO -->
 <div class="cat-hero">
+    <div class="particles" id="cat-particles"></div>
     <a href="index.html" class="back-link">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Volver al inicio
@@ -1003,6 +1019,21 @@
     document.getElementById('cart-fab').addEventListener('click', abrirCarrito);
     document.getElementById('cart-close').addEventListener('click', cerrarCarrito);
     document.getElementById('cart-overlay').addEventListener('click', cerrarCarrito);
+
+    // Fondo dinámico: burbujas naranjas flotando en el hero (mismo efecto que el index).
+    (function () {
+        const container = document.getElementById('cat-particles');
+        if (!container) return;
+        for (let i = 0; i < 16; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = Math.random() * 50 + 8;
+            p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random() * 100}%;`
+                + `animation-duration:${Math.random() * 15 + 10}s;animation-delay:${Math.random() * -20}s;`
+                + `opacity:${Math.random() * 0.35};background:rgba(255,102,0,${Math.random() * 0.1 + 0.04});`;
+            container.appendChild(p);
+        }
+    })();
 
     renderCart(); // pinta el carrito guardado de visitas anteriores
     if (location.hash === '#carrito') abrirCarrito(); // llegaste desde el ícono de carrito del index
