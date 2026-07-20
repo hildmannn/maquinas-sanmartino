@@ -46,7 +46,7 @@
         }
         .nav-wrap.scrolled nav { box-shadow: 0 4px 24px rgba(0,0,0,0.7); }
         .nav-brand { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; flex-shrink: 0; }
-        .nav-logo-img { height: 44px; width: 44px; border-radius: 50%; background: #000 url('assets/logo-sanmartino.jpg') center / 122% no-repeat; }
+        .nav-logo-img { height: 44px; width: 44px; border-radius: 50%; background: #000 url('assets/logo-sanmartino.png') center / cover no-repeat; }
         .nav-brand-img { height: 32px; width: auto; max-width: 210px; object-fit: contain; display: block; }
         @media (max-width: 600px) { .nav-brand-img { height: 26px; max-width: 46vw; } }
 
@@ -91,14 +91,19 @@
            el azul-subrayado por defecto del navegador (ese era el "subrayado azul"). */
         .mega-feature {
             border-radius: 14px; overflow: hidden; position: relative; min-height: 220px;
-            background: var(--card2); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.6rem;
-            text-decoration: none; color: var(--white);
+            background: #ffffff; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.6rem;
+            text-decoration: none; color: #101010; transition: box-shadow 0.3s ease, transform 0.3s ease;
         }
-        .mega-feature img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 1.2rem; }
-        .mega-feature .mf-txt { position: relative; z-index: 2; }
+        .mega-feature:hover { box-shadow: 0 16px 34px rgba(0,0,0,0.4); transform: translateY(-2px); }
+        .mega-feature .mf-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 1.2rem; transition: opacity 0.28s ease, transform 0.45s ease; }
+        .mega-feature:hover .mf-img { transform: scale(1.07) rotate(-1deg); }
+        .mega-feature::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 46%; z-index: 1; background: linear-gradient(to top, #ffffff 28%, rgba(255,255,255,0) 100%); pointer-events: none; }
+        .mega-feature .mf-txt { position: relative; z-index: 2; transition: opacity 0.28s ease; }
         .mega-feature .mf-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); }
-        .mega-feature .mf-title { font-size: 1.15rem; font-weight: 700; margin-top: 0.2rem; color: var(--white); text-decoration: none; }
-        .mega-feature .mf-link { font-size: 0.78rem; font-weight: 600; color: var(--light); margin-top: 0.5rem; display: inline-flex; gap: 0.3rem; text-decoration: none; }
+        .mega-feature .mf-title { font-size: 1.15rem; font-weight: 700; margin-top: 0.2rem; color: #101010; text-decoration: none; }
+        .mega-feature .mf-link { font-size: 0.78rem; font-weight: 600; color: #444; margin-top: 0.5rem; display: inline-flex; gap: 0.3rem; text-decoration: none; transition: gap 0.25s ease; }
+        .mega-feature:hover .mf-link { gap: 0.55rem; color: var(--orange); }
+        .mega-feature.swapping .mf-img, .mega-feature.swapping .mf-txt { opacity: 0; }
 
         .nav-right { display: flex; align-items: center; gap: 1.1rem; flex-shrink: 0; }
         .nav-cart { position: relative; background: none; border: none; cursor: pointer; padding: 0.35rem; display: flex; }
@@ -339,7 +344,7 @@
         /* ─── FOOTER ─── */
         footer { background: #040404; padding: 2.5rem 2rem; border-top: 1px solid rgba(255,102,0,0.15); margin-top: 4rem; }
         .footer-inner { max-width: 1240px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
-        .footer-logo-img { height: 42px; width: 42px; border-radius: 50%; background: #000 url('assets/logo-sanmartino.jpg') center / 122% no-repeat; opacity: 0.95; }
+        .footer-logo-img { height: 42px; width: 42px; border-radius: 50%; background: #000 url('assets/logo-sanmartino.png') center / cover no-repeat; opacity: 0.95; }
         .footer-copy { color: var(--gray); font-size: 0.72rem; }
 
         /* ─── REVEAL ─── */
@@ -408,12 +413,12 @@
                             <a href="#cat-accesorios"><svg viewBox="0 0 24 24"><path d="M16.5 9.4L7.5 4.2M21 16V8a2 2 0 00-1-1.7l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.7l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg> Accesorios</a>
                             <a href="#cat-linea-hogar"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg> Línea Hogar</a>
                         </div>
-                        <a class="mega-feature" href="#cat-linea-aerobica">
-                            <img src="assets/fotos-demo/indoor-bike.png" alt="Línea Aeróbica">
+                        <a class="mega-feature" id="mega-feature" href="#cat-linea-aerobica">
+                            <img class="mf-img" src="assets/fotos-demo/indoor-bike.png" alt="Indoor Bike">
                             <div class="mf-txt">
                                 <div class="mf-tag">Destacado</div>
-                                <div class="mf-title">Línea Aeróbica</div>
-                                <span class="mf-link">Ver máquinas de cardio →</span>
+                                <div class="mf-title">Indoor Bike</div>
+                                <span class="mf-link">Ver Línea Aeróbica →</span>
                             </div>
                         </a>
                     </div>
@@ -1033,6 +1038,34 @@
                 + `opacity:${Math.random() * 0.35};background:rgba(255,102,0,${Math.random() * 0.1 + 0.04});`;
             container.appendChild(p);
         }
+    })();
+
+    // Producto destacado del navbar: rota entre 3 cada 3s (se pausa al pasar el cursor).
+    // Los href quedan como "#cat-..." para que el mega menú filtre en el lugar (ver setupMega).
+    const DESTACADOS = [
+        { img: 'assets/fotos-demo/indoor-bike.png', title: 'Indoor Bike',       link: 'Ver Línea Aeróbica →', href: '#cat-linea-aerobica' },
+        { img: 'assets/fotos-demo/13031.png',       title: 'Prensa Horizontal', link: 'Ver Línea Max →',       href: '#cat-linea-max' },
+        { img: 'assets/fotos-demo/13032.png',       title: 'Multicadera',       link: 'Ver Línea Max →',       href: '#cat-linea-max' },
+    ];
+    (function () {
+        const feat = document.getElementById('mega-feature');
+        if (!feat) return;
+        const img = feat.querySelector('.mf-img');
+        const title = feat.querySelector('.mf-title');
+        const link = feat.querySelector('.mf-link');
+        let i = 0, pausado = false;
+        function pintar(n) {
+            feat.classList.add('swapping');
+            setTimeout(() => {
+                const d = DESTACADOS[n];
+                img.src = d.img; img.alt = d.title;
+                title.textContent = d.title; link.textContent = d.link; feat.setAttribute('href', d.href);
+                feat.classList.remove('swapping');
+            }, 280);
+        }
+        feat.addEventListener('mouseenter', () => { pausado = true; });
+        feat.addEventListener('mouseleave', () => { pausado = false; });
+        setInterval(() => { if (pausado) return; i = (i + 1) % DESTACADOS.length; pintar(i); }, 3000);
     })();
 
     renderCart(); // pinta el carrito guardado de visitas anteriores
