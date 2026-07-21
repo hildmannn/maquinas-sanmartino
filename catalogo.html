@@ -380,7 +380,38 @@
             .hamburger { display: flex; }
             .cat-hero, .cat-wrap, .cat-filters { padding-left: 1.2rem; padding-right: 1.2rem; }
         }
-        @media (max-width: 560px) { .cat-grid { grid-template-columns: 1fr; } }
+        /* En celular una sola columna dejaba ~1 producto por pantalla y la barra de
+           filtros se apilaba en 4 filas, comiéndose media pantalla al quedar sticky.
+           Acá van dos columnas y los filtros pasan a una fila deslizable. */
+        @media (max-width: 560px) {
+            .cat-hero { padding: 6rem 1.15rem 1.5rem; }
+            .cat-wrap { padding: 1rem 1.15rem 3.5rem; }
+
+            /* Una sola fila que se desliza con el dedo, en vez de 4 filas fijas. */
+            .cat-filters {
+                padding: 0.6rem 1.15rem; gap: 0.45rem;
+                flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+            }
+            .cat-filters::-webkit-scrollbar { display: none; }
+            .cat-filters .flt-label { display: none; }
+            .cat-subfilters { flex-wrap: nowrap; }
+            .chip, .subchip, .flt-divider { flex-shrink: 0; }
+            .chip { font-size: 0.72rem; padding: 0.42rem 0.85rem; }
+
+            .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+            .cat-item { min-height: 0; }
+            .cat-item-img { min-height: 150px; }
+            .cat-item-img img { padding: 0.6rem; }
+            .cat-item-body { padding: 0.7rem 0.7rem 0.9rem; gap: 0.4rem; }
+            .cat-item-body h4 { font-size: 0.78rem; line-height: 1.3; }
+            .cat-item-code { font-size: 0.56rem; margin-bottom: 0.35rem; }
+            .cat-item-sub { font-size: 0.65rem; }
+            /* La card entera ya es un link: la flecha solo robaba ancho al título. */
+            .cat-arrow { display: none; }
+            .cat-add { width: 32px; height: 32px; font-size: 1.15rem; top: 0.5rem; right: 0.5rem; }
+            /* El botón flotante de WhatsApp se apoyaba encima del copyright. */
+            footer { padding-bottom: 5.5rem; }
+        }
     </style>
 </head>
 <body>
@@ -656,6 +687,7 @@
 
         let chipsHtml = '';
         const prolineSubs = []; // {id, nombre} de cada grupo muscular de ProLine, para los subchips
+        let prolineSecId = '';  // para colgar los subchips al lado del chip de ProLine
         CATS.forEach((cat) => {
             const items = porCat[cat.key];
             if (!items || !items.length) return;
@@ -673,6 +705,7 @@
             let cuerpo;
             if (cat.key === 'linea proline') {
                 // ProLine dividido en subsecciones por grupo muscular.
+                prolineSecId = secId;
                 const porSub = {};
                 items.forEach((p) => { const k = p.subcategoria || 'otros'; (porSub[k] = porSub[k] || []).push(p); });
                 const orden = SUBCATS_PROLINE.concat(Object.keys(porSub).filter((k) => !SUBCATS_PROLINE.includes(k)));
@@ -706,7 +739,11 @@
                 + '<button class="subchip active" data-sub="all">Todos</button>'
                 + prolineSubs.map((s) => `<button class="subchip" data-sub="${s.id}">${s.nombre}</button>`).join('')
                 + '</span>';
-            filtros.insertAdjacentHTML('beforeend', subHtml);
+            // Van pegados al chip de ProLine, no al final de la barra: en celular
+            // la barra scrollea en horizontal y al final quedaban fuera de vista.
+            const chipProline = filtros.querySelector(`.chip[data-filter="${prolineSecId}"]`);
+            if (chipProline) chipProline.insertAdjacentHTML('afterend', subHtml);
+            else filtros.insertAdjacentHTML('beforeend', subHtml);
         }
 
         lucide.createIcons();

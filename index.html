@@ -745,7 +745,64 @@
             .footer-inner { flex-direction: column; text-align: center; }
             .geo-1, .geo-2, .geo-3 { display: none; }
         }
-        @media (max-width: 480px) { .products-grid { grid-template-columns: 1fr; } nav { padding: 0.7rem 1rem; } }
+        /* En celular el marco de 2rem se comía el 16% del ancho útil y los 6rem
+           verticales de cada sección obligaban a scrollear de más. Acá se achica
+           el marco —no el texto de lectura— para que entre más contenido. */
+        @media (max-width: 600px) {
+            section { padding: 3.4rem 1.15rem; }
+            .hero { min-height: auto; padding: 5.5rem 1.15rem 3rem; }
+            .hero-grid, .about-grid, .contact-grid { gap: 2rem; }
+            /* El clamp tenía piso de 2rem: a 390px el título quedaba pegado a
+               ambos bordes. Estos valores nunca superan al anterior. */
+            .hero h1 { font-size: clamp(1.6rem, 7.2vw, 2rem); }
+            .section-title { font-size: clamp(1.45rem, 6.4vw, 1.8rem); }
+            /* Menos interletrado y padding: los badges pasan de 4 filas a 2. */
+            .hero-badges { gap: 0.4rem; margin-bottom: 1rem; }
+            .badge { padding: 0.28rem 0.62rem; letter-spacing: 0.3px; }
+            /* Dos columnas en lugar de una: se ve el doble de líneas de un vistazo. */
+            .products-grid { grid-template-columns: repeat(2,1fr); gap: 0.7rem; }
+            .product-card { height: 232px; }
+            .product-body { padding: 0.85rem; }
+            .product-card h3 { font-size: 0.82rem; letter-spacing: 0.4px; }
+            .product-badge-img { font-size: 0.55rem; top: 0.5rem; left: 0.5rem; padding: 0.15rem 0.45rem; }
+            .product-img img { padding: 1rem 0.9rem 2.6rem; }
+            .product-img.pull-back img { padding: 1.5rem 1.4rem 3rem; }
+            .product-img.pull-back-soft img { padding: 1.25rem 1.15rem 2.8rem; }
+            .services-grid { gap: 0.9rem; margin-top: 1.8rem; }
+            .service-card { padding: 1.7rem 1.3rem; }
+            .stats-inner { gap: 1.2rem; }
+            .ig-card { padding: 1.2rem; }
+            /* El botón flotante de WhatsApp se apoyaba encima del copyright. */
+            footer { padding-bottom: 5.5rem; }
+            /* Hasta revelarse, estos bloques quedaban corridos 30px a la derecha y
+               generaban scroll lateral. En celular la entrada va en vertical. */
+            .reveal-left, .reveal-right { transform: translateY(25px); }
+            .reveal-left.visible, .reveal-right.visible { transform: none; }
+
+            /* Los dos botones compartían una fila flex y se encogían, lo que partía
+               el texto adentro y tiraba la flecha abajo. Uno por fila, a lo ancho. */
+            .audiencia-btns { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+            .btn-aud { justify-content: center; }
+
+            /* Feed tipo Instagram: 3 por fila en vez de 1. */
+            .feed-masonry { columns: 3; column-gap: 0.45rem; }
+            .feed-masonry-item { margin-bottom: 0.45rem; border-radius: 8px; }
+
+            /* Reseñas de a dos: la tipografía baja lo justo para que el texto
+               siga entrando cómodo en media pantalla. */
+            .testimonios-grid { grid-template-columns: repeat(2,1fr); gap: 0.7rem; }
+            .testimonio-card { padding: 1.1rem 0.95rem; }
+            .testimonio-card::before { display: none; }
+            .testimonio-stars { font-size: 0.72rem; letter-spacing: 1px; margin-bottom: 0.6rem; }
+            .testimonio-text { font-size: 0.8rem; line-height: 1.62; margin-bottom: 1rem; }
+            .testimonio-sep { margin-bottom: 0.8rem; }
+            .testimonio-avatar { width: 34px; height: 34px; font-size: 0.8rem; }
+            .testimonio-name { font-size: 0.76rem; }
+            .testimonio-gym { font-size: 0.65rem; }
+        }
+        @media (max-width: 480px) { nav { padding: 0.7rem 1rem; } }
+        /* Abajo de 360px dos columnas ya aprietan demasiado la foto. */
+        @media (max-width: 359px) { .products-grid { grid-template-columns: 1fr; } .product-card { height: 260px; } }
     </style>
     <script type="application/ld+json">
     {
@@ -801,7 +858,7 @@
 <div class="mobile-menu" id="mobileMenu">
     <button class="close-btn" onclick="toggleMenu()">✕</button>
     <a href="#nosotros" onclick="toggleMenu()">Nosotros</a>
-    <a href="#productos" onclick="toggleMenu()">Catálogo</a>
+    <a href="catalogo.html" onclick="toggleMenu()">Catálogo</a>
     <a href="#galeria" onclick="toggleMenu()">Galería</a>
     <a href="#testimonios" onclick="toggleMenu()">Testimonios</a>
     <a href="#contacto" onclick="toggleMenu()">Contactar</a>
@@ -1017,7 +1074,7 @@
                 <span class="audiencia-feature">Logística especializada en equipamiento pesado</span>
             </div>
             <div class="audiencia-btns">
-                <a href="https://wa.me/5493584203393?text=Hola!%20Quiero%20equipar%20mi%20gimnasio.%20%C2%BFMe%20pueden%20asesorar?" target="_blank" class="btn-aud btn-aud-wa" onclick="trackWA('audiencia-b2b')">Consultar equipamiento →</a>
+                <a href="https://wa.me/5493584203393?text=Hola!%20Quiero%20equipar%20mi%20gimnasio.%20%C2%BFMe%20pueden%20asesorar?" target="_blank" class="btn-aud btn-aud-wa" onclick="trackWA('audiencia-b2b')">Consultar equipamiento&nbsp;→</a>
                 <a href="catalogo.html" class="btn-aud btn-aud-ghost" onclick="trackCatalog()">Ver catálogo</a>
             </div>
         </div>
@@ -1034,7 +1091,7 @@
                 <span class="audiencia-feature">Consultá precio según modelo y presupuesto</span>
             </div>
             <div class="audiencia-btns">
-                <a href="https://wa.me/5493584203393?text=Hola!%20Quiero%20armar%20un%20gym%20en%20casa.%20%C2%BFQu%C3%A9%20me%20recomiendan?" target="_blank" class="btn-aud btn-aud-wa green" onclick="trackWA('audiencia-b2c')">Pedir asesoramiento →</a>
+                <a href="https://wa.me/5493584203393?text=Hola!%20Quiero%20armar%20un%20gym%20en%20casa.%20%C2%BFQu%C3%A9%20me%20recomiendan?" target="_blank" class="btn-aud btn-aud-wa green" onclick="trackWA('audiencia-b2c')">Pedir asesoramiento&nbsp;→</a>
                 <a href="catalogo.html?cat=linea-hogar" class="btn-aud btn-aud-ghost">Ver Línea Hogar</a>
             </div>
         </div>
