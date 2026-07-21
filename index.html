@@ -347,11 +347,19 @@
         .ig-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; padding-bottom: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
         .ig-avatar-ring {
             width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+            padding: 2.5px; position: relative;
+        }
+        /* El degradado animado va en un pseudo-elemento, no en el contenedor: `filter`
+           se hereda a los hijos, así que el hue-rotate del anillo también teñía de
+           verdoso al logo de adentro. Acá el logo queda por encima y sin filtro. */
+        .ig-avatar-ring::before {
+            content: ''; position: absolute; inset: 0; z-index: 0; border-radius: 50%;
             background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            padding: 2.5px; animation: ring-rotate 4s linear infinite;
+            animation: ring-rotate 4s linear infinite;
         }
         @keyframes ring-rotate { to { filter: hue-rotate(30deg); } }
         .ig-avatar-inner {
+            position: relative; z-index: 1;
             width: 100%; height: 100%; border-radius: 50%; background: var(--card);
             display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
         }
@@ -483,12 +491,17 @@
             transition: filter 0.45s ease, transform 0.5s ease;
         }
         .product-card:hover .product-img { filter: blur(6px) brightness(0.42); transform: scale(1.07); }
-        .product-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .product-icon {
-            width: 84px; height: 84px;
-            stroke: rgba(255,102,0,0.5); stroke-width: 1.1; fill: none;
-            transition: stroke 0.35s;
+        /* Las portadas son recortes con fondo transparente: se encuadran con `contain`
+           para que la máquina entre entera sobre el degradado de la card. El padding
+           inferior le deja aire al título, que va anclado abajo. */
+        .product-img img {
+            width: 100%; height: 100%; display: block;
+            object-fit: contain; padding: 1.5rem 1.4rem 3.6rem;
         }
+        /* Estas entraban casi bien de por sí: un poco más de aire para alejarlas. */
+        .product-img.pull-back img { padding: 2.4rem 2.2rem 4.4rem; }
+        /* Igual que la anterior pero con algo menos de aire: se ven un toque más grandes. */
+        .product-img.pull-back-soft img { padding: 2rem 1.85rem 4rem; }
         .product-img-overlay {
             position: absolute; inset: 0; z-index: 1;
             background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.25) 42%, transparent 68%);
@@ -624,7 +637,10 @@
             max-width: 1200px; margin: 0 auto;
             display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;
         }
+        .footer-brand { display: flex; align-items: center; gap: 0.8rem; }
         .footer-logo-img { height: 42px; width: 42px; border-radius: 50%; background: #000 url('assets/logo-sanmartino.png') center / cover no-repeat; opacity: 0.95; }
+        .footer-brand-img { height: 30px; width: auto; max-width: 200px; object-fit: contain; display: block; opacity: 0.95; }
+        @media (max-width: 600px) { .footer-brand-img { height: 24px; max-width: 44vw; } }
         .footer-links { display: flex; gap: 0.7rem; }
         .footer-links a {
             width: 38px; height: 38px; background: var(--card); border-radius: 50%;
@@ -1083,8 +1099,8 @@
         </div>
         <div class="products-grid">
             <a href="catalogo.html?cat=linea-proline" class="product-card reveal" onclick="trackCatalog()">
-                <div class="product-img">
-                    <svg class="product-icon" data-lucide="dumbbell"></svg>
+                <div class="product-img pull-back">
+                    <img src="assets/portadas/proline.webp" alt="Máquinas de musculación profesional Línea ProLine" loading="lazy">
                     <div class="product-img-overlay"></div>
                     <span class="product-badge-img">ProLine</span>
                 </div>
@@ -1096,7 +1112,7 @@
             </a>
             <a href="catalogo.html?cat=linea-max" class="product-card reveal" onclick="trackCatalog()">
                 <div class="product-img">
-                    <svg class="product-icon" data-lucide="zap"></svg>
+                    <img src="assets/portadas/max.webp" alt="Máquinas de gimnasio reforzadas Línea Max" loading="lazy">
                     <div class="product-img-overlay"></div>
                     <span class="product-badge-img">Max</span>
                 </div>
@@ -1107,8 +1123,8 @@
                 </div>
             </a>
             <a href="catalogo.html?cat=linea-a-palanca" class="product-card reveal" onclick="trackCatalog()">
-                <div class="product-img">
-                    <svg class="product-icon" data-lucide="activity"></svg>
+                <div class="product-img pull-back-soft">
+                    <img src="assets/portadas/palanca.webp" alt="Máquinas de musculación Línea a Palanca con discos olímpicos" loading="lazy">
                     <div class="product-img-overlay"></div>
                     <span class="product-badge-img">Palanca</span>
                 </div>
@@ -1120,7 +1136,7 @@
             </a>
             <a href="catalogo.html?cat=linea-aerobica" class="product-card reveal" onclick="trackCatalog()">
                 <div class="product-img">
-                    <svg class="product-icon" data-lucide="bike"></svg>
+                    <img src="assets/portadas/aerobica.webp" alt="Cintas y bicicletas de gimnasio Línea Aeróbica" loading="lazy">
                     <div class="product-img-overlay"></div>
                     <span class="product-badge-img">Aeróbica</span>
                 </div>
@@ -1131,8 +1147,8 @@
                 </div>
             </a>
             <a href="catalogo.html?cat=linea-hogar" class="product-card reveal" onclick="trackCatalog()">
-                <div class="product-img">
-                    <svg class="product-icon" data-lucide="home"></svg>
+                <div class="product-img pull-back-soft">
+                    <img src="assets/portadas/hogar.webp" alt="Equipamiento de gimnasio compacto Línea Hogar" loading="lazy">
                     <div class="product-img-overlay"></div>
                     <span class="product-badge-img">Hogar</span>
                 </div>
@@ -1144,7 +1160,7 @@
             </a>
             <a href="catalogo.html?cat=entrenamiento-funcional" class="product-card reveal" onclick="trackCatalog()">
                 <div class="product-img">
-                    <svg class="product-icon" data-lucide="flame"></svg>
+                    <img src="assets/portadas/funcional.webp" alt="Racks, kettlebells y discos para entrenamiento funcional" loading="lazy">
                     <div class="product-img-overlay"></div>
                     <span class="product-badge-img">Funcional</span>
                 </div>
@@ -1156,7 +1172,7 @@
             </a>
             <a href="catalogo.html?cat=aire-libre" class="product-card reveal" onclick="trackCatalog()">
                 <div class="product-img">
-                    <svg class="product-icon" data-lucide="sun"></svg>
+                    <img src="assets/portadas/aire-libre.webp" alt="Aparatos de gimnasia para plazas y espacios al aire libre" loading="lazy">
                     <div class="product-img-overlay"></div>
                     <span class="product-badge-img">Aire Libre</span>
                 </div>
@@ -1168,7 +1184,7 @@
             </a>
             <a href="catalogo.html?cat=accesorios" class="product-card reveal" onclick="trackCatalog()">
                 <div class="product-img">
-                    <svg class="product-icon" data-lucide="package"></svg>
+                    <img src="assets/portadas/accesorios.webp" alt="Accesorios de gimnasio: muñequeras, sogas, bandas y steps" loading="lazy">
                     <div class="product-img-overlay"></div>
                     <span class="product-badge-img">Accesorios</span>
                 </div>
@@ -1440,7 +1456,10 @@
 <!-- FOOTER -->
 <footer>
     <div class="footer-inner">
-        <span class="footer-logo-img" role="img" aria-label="Maquinas Sanmartino"></span>
+        <div class="footer-brand">
+            <span class="footer-logo-img" role="img" aria-label="Maquinas Sanmartino"></span>
+            <img src="assets/nombre-header.png" alt="Maquinas Sanmartino" class="footer-brand-img">
+        </div>
         <div class="footer-links">
             <a href="https://www.instagram.com/maquinassanmartino/" target="_blank" title="Instagram">
                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="#E1306C"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
