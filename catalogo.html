@@ -927,11 +927,16 @@
     }
 
     // ─── Animación de aparición ───
+    // Las secciones del catálogo se muestran TODAS de entrada: son bloques larguísimos
+    // (ProLine tiene cientos de máquinas) y con `threshold` por porcentaje nunca llegaban
+    // a "intersectar" lo suficiente, así que quedaban invisibles hasta scrollear.
+    // El observer se deja solo para los bloques cortos del resto de la página.
     function setupReveal() {
+        document.querySelectorAll('.cat-section.reveal').forEach((el) => el.classList.add('visible'));
         const obs = new IntersectionObserver((entries) => {
             entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.05 });
-        document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
+        }, { threshold: 0, rootMargin: '150px 0px' }); // basta con que asome un pixel
+        document.querySelectorAll('.reveal:not(.visible)').forEach((el) => obs.observe(el));
     }
 
     // Barra de progreso + sombra del nav al hacer scroll.
