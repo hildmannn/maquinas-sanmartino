@@ -248,11 +248,11 @@
         @media (max-width: 768px) { .cat-add { opacity: 1; transform: none; } }
         /* Insignia "tiene video en Instagram": visible siempre (no solo al hover), para que se note en celular */
         .cat-ig-badge {
-            position: absolute; top: 0.9rem; left: 0.9rem; z-index: 2; width: 30px; height: 30px; border-radius: 50%;
-            background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            position: absolute; top: 0.9rem; left: 0.9rem; z-index: 2; width: 30px; height: 30px; border-radius: 9px;
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.35);
         }
-        .cat-ig-badge svg { width: 16px; height: 16px; stroke: #fff; }
+        .cat-ig-badge svg { width: 17px; height: 17px; stroke: #fff; }
         /* Pie de la card: código + nombre a la izquierda, flecha en un cuadrito a la derecha */
         .cat-item-body { padding: 1.2rem 1.4rem 1.5rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; background: #ffffff; }
         .cat-item-txt { min-width: 0; }
@@ -318,6 +318,13 @@
         .modal-actions { display: flex; flex-direction: column; gap: 0.7rem; margin-top: auto; }
         .modal-actions .btn-primary, .modal-actions .btn-secondary { width: 100%; }
         .modal-actions .btn-secondary svg { width: 15px; height: 15px; }
+        /* Botón "Ver video en Instagram": gradiente de marca en vez del estilo genérico */
+        #modal-ig {
+            background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+            border-color: transparent; color: #fff;
+        }
+        #modal-ig svg { stroke: #fff; }
+        #modal-ig:hover { border-color: transparent; color: #fff; filter: brightness(1.1); transform: translateY(-3px); }
         @media (max-width: 768px) { .modal { grid-template-columns: 1fr; } .modal-main img { max-height: 40vh; } }
 
         /* ─── CARRITO ─── */
