@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo | Maquinas Sanmartino</title>
     <meta name="description" content="Catálogo completo de equipamiento para gimnasios. Líneas ProLine, Max, Palanca, Aeróbica, Funcional, Aire Libre, Soportes y Accesorios.">
+    <link rel="canonical" href="https://maquinassanmartino.com/catalogo.html">
+    <meta property="og:title" content="Catálogo | Máquinas Sanmartino">
+    <meta property="og:description" content="Catálogo completo de equipamiento para gimnasios. Buscá cualquier máquina por nombre o código.">
+    <meta property="og:image" content="https://maquinassanmartino.com/assets/logo-sanmartino.png">
+    <meta property="og:url" content="https://maquinassanmartino.com/catalogo.html">
+    <meta property="og:type" content="website">
+    <!-- Favicon (pestaña del navegador + resultados de Google) -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#FF6600">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -121,17 +135,31 @@
         .mobile-menu a:hover { color: var(--orange); }
         .mobile-menu .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--white); font-size: 2rem; cursor: pointer; }
 
-        /* ─── HERO ─── */
+        /* ─── HERO ───
+           El hero va a ancho completo (full-bleed) y el contenido se centra con .cat-hero-inner.
+           Antes el max-width estaba en el propio .cat-hero: con overflow:hidden, eso recortaba
+           el degradado y las burbujas en un rectángulo con bordes duros en pantallas anchas. */
         .cat-hero {
-            padding: 8rem 3rem 2.5rem; max-width: 1680px; margin: 0 auto;
+            padding: 8rem 3rem 3.5rem;
             position: relative; overflow: hidden;
-            background: radial-gradient(ellipse at 72% 0%, rgba(255,102,0,0.10) 0%, transparent 55%),
-                        radial-gradient(ellipse at 8% 95%, rgba(255,102,0,0.05) 0%, transparent 50%);
+            background: radial-gradient(ellipse 60% 120% at 72% 0%, rgba(255,102,0,0.10) 0%, transparent 62%),
+                        radial-gradient(ellipse 55% 110% at 8% 100%, rgba(255,102,0,0.05) 0%, transparent 60%);
         }
-        .cat-hero > *:not(.particles) { position: relative; z-index: 1; }
-        /* Fondo dinámico: burbujas naranjas flotando (mismo efecto que el index) */
-        .cat-hero .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-        .cat-hero .particle { position: absolute; border-radius: 50%; background: rgba(255,102,0,0.15); animation: float-particle linear infinite; }
+        .cat-hero-inner { max-width: 1680px; margin: 0 auto; position: relative; z-index: 1; }
+        /* Difuminado final: el tinte del hero se funde con el negro de la página. */
+        .cat-hero::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 140px;
+            background: linear-gradient(to bottom, rgba(8,8,8,0) 0%, var(--black) 100%);
+            pointer-events: none; z-index: 0;
+        }
+        /* Fondo dinámico: burbujas naranjas flotando (mismo efecto que el index).
+           La máscara hace que se desvanezcan de a poco contra los bordes en vez de cortarse de golpe. */
+        .cat-hero .particles {
+            position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 55%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 55%, transparent 100%);
+        }
+        .cat-hero .particle { position: absolute; border-radius: 50%; background: rgba(255,102,0,0.15); animation: float-particle linear infinite; filter: blur(0.4px); }
         @keyframes float-particle {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
@@ -398,7 +426,8 @@
            filtros se apilaba en 4 filas, comiéndose media pantalla al quedar sticky.
            Acá van dos columnas y los filtros pasan a una fila deslizable. */
         @media (max-width: 560px) {
-            .cat-hero { padding: 6rem 1.15rem 1.5rem; }
+            .cat-hero { padding: 6rem 1.15rem 2.2rem; }
+            .cat-hero::after { height: 80px; }
             .cat-wrap { padding: 1rem 1.15rem 3.5rem; }
 
             /* Una sola fila que se desliza con el dedo, en vez de 4 filas fijas. */
@@ -501,18 +530,20 @@
 <!-- HERO -->
 <div class="cat-hero">
     <div class="particles" id="cat-particles"></div>
-    <a href="index.html" class="back-link">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        Volver al inicio
-    </a>
-    <h1>Nuestro <span>Catálogo</span></h1>
-    <p>Más de 30 años fabricando equipamiento para gimnasios en Argentina. Buscá cualquier máquina por nombre o código y consultanos por WhatsApp.</p>
-    <div class="cat-search-wrap">
-        <svg class="cat-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="text" id="cat-search" placeholder="Buscá por nombre o código de máquina…" autocomplete="off" aria-label="Buscar máquina">
-        <button class="cat-search-clear" id="cat-search-clear" aria-label="Limpiar búsqueda">✕</button>
+    <div class="cat-hero-inner">
+        <a href="index.html" class="back-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Volver al inicio
+        </a>
+        <h1>Nuestro <span>Catálogo</span></h1>
+        <p>Más de 30 años fabricando equipamiento para gimnasios en Argentina. Buscá cualquier máquina por nombre o código y consultanos por WhatsApp.</p>
+        <div class="cat-search-wrap">
+            <svg class="cat-search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="cat-search" placeholder="Buscá por nombre o código de máquina…" autocomplete="off" aria-label="Buscar máquina">
+            <button class="cat-search-clear" id="cat-search-clear" aria-label="Limpiar búsqueda">✕</button>
+        </div>
+        <p class="cat-search-hint">Ej: “press de pecho”, “prensa”, o el código de la máquina (ej: 2001).</p>
     </div>
-    <p class="cat-search-hint">Ej: “press de pecho”, “prensa”, o el código de la máquina (ej: 2001).</p>
 </div>
 
 <!-- FILTROS (chips, se llenan dinámicamente) -->

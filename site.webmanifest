@@ -1,0 +1,13 @@
+{
+  "name": "Máquinas Sanmartino",
+  "short_name": "Sanmartino",
+  "description": "Equipos para gimnasios. Fabricantes directos en Río Cuarto, Córdoba.",
+  "icons": [
+    { "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#FF6600",
+  "background_color": "#080808",
+  "display": "standalone",
+  "start_url": "/"
+}
