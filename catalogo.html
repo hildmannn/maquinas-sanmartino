@@ -246,6 +246,13 @@
         .cat-add:hover { background: var(--orange); transform: scale(1.08); }
         .cat-add.added { background: #25D366; color: #fff; }
         @media (max-width: 768px) { .cat-add { opacity: 1; transform: none; } }
+        /* Insignia "tiene video en Instagram": visible siempre (no solo al hover), para que se note en celular */
+        .cat-ig-badge {
+            position: absolute; top: 0.9rem; left: 0.9rem; z-index: 2; width: 30px; height: 30px; border-radius: 50%;
+            background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .cat-ig-badge svg { width: 16px; height: 16px; stroke: #fff; }
         /* Pie de la card: código + nombre a la izquierda, flecha en un cuadrito a la derecha */
         .cat-item-body { padding: 1.2rem 1.4rem 1.5rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; background: #ffffff; }
         .cat-item-txt { min-width: 0; }
@@ -310,6 +317,7 @@
         .modal-specs-text { color: var(--light); font-size: 0.88rem; line-height: 1.7; white-space: pre-line; font-weight: 300; }
         .modal-actions { display: flex; flex-direction: column; gap: 0.7rem; margin-top: auto; }
         .modal-actions .btn-primary, .modal-actions .btn-secondary { width: 100%; }
+        .modal-actions .btn-secondary svg { width: 15px; height: 15px; }
         @media (max-width: 768px) { .modal { grid-template-columns: 1fr; } .modal-main img { max-height: 40vh; } }
 
         /* ─── CARRITO ─── */
@@ -553,6 +561,9 @@
             <div class="modal-actions">
                 <button class="btn-primary" id="modal-add">Agregar al pedido</button>
                 <a class="btn-secondary" id="modal-wa" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+                <a class="btn-secondary" id="modal-ig" target="_blank" rel="noopener" style="display:none;">
+                    <svg data-lucide="instagram"></svg> Ver video en Instagram
+                </a>
             </div>
         </div>
     </div>
@@ -643,9 +654,13 @@
             ? `<img src="${esc(foto)}" alt="${esc(p.nombre)}" loading="lazy">`
             : `<svg class="cat-item-img-icon" data-lucide="dumbbell"></svg>`;
         const sub = p.subcategoria ? `<span class="cat-item-sub">${esc(p.subcategoria)}</span>` : '';
+        const igBadge = p.instagramUrl
+            ? `<span class="cat-ig-badge" title="Tiene video en Instagram"><svg data-lucide="instagram"></svg></span>`
+            : '';
         return `<article class="cat-item" data-codigo="${esc(p.codigo)}" data-nombre="${esc(p.nombre)}">
             <div class="cat-item-img">
                 ${img}
+                ${igBadge}
                 <button class="cat-add" data-add="${esc(p.codigo)}" aria-label="Agregar al pedido" title="Agregar al pedido">+</button>
             </div>
             <div class="cat-item-body">
@@ -987,6 +1002,15 @@
         const msg = encodeURIComponent(`Hola! Me interesa la máquina código ${p.codigo} (${p.nombre}). Quería consultar precio y disponibilidad.`);
         document.getElementById('modal-wa').href = `https://wa.me/${WHATSAPP}?text=${msg}`;
         document.getElementById('modal-add').onclick = () => { agregarAlCarrito(p.codigo); cerrarModal(); abrirCarrito(); };
+
+        // Botón a Instagram: solo si esta máquina tiene un link cargado.
+        const igBtn = document.getElementById('modal-ig');
+        if (p.instagramUrl && p.instagramUrl.trim()) {
+            igBtn.href = p.instagramUrl.trim();
+            igBtn.style.display = 'flex';
+        } else {
+            igBtn.style.display = 'none';
+        }
 
         document.getElementById('modal').classList.add('open');
         document.body.style.overflow = 'hidden';
