@@ -85,7 +85,9 @@
         #page-blur.show { opacity: 1; visibility: visible; }
 
         /* ─── NAV (mega menú) ─── */
-        .nav-wrap { position: fixed; top: 3px; left: 0; right: 0; z-index: 1000; }
+        /* La franja de 3px de arriba (donde corre la barra de progreso) va pintada de negro: vacía,
+           al bajar se veía la página pasando por detrás. */
+        .nav-wrap { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; border-top: 3px solid var(--black); }
         nav {
             display: flex; justify-content: space-between; align-items: stretch;
             padding: 0 2.5rem; min-height: 64px; background: rgba(8,8,8,0.96);

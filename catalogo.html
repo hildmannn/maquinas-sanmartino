@@ -51,7 +51,9 @@
         #page-blur.show { opacity: 1; visibility: visible; }
 
         /* ─── NAV (mega menú) ─── */
-        .nav-wrap { position: fixed; top: 3px; left: 0; right: 0; z-index: 1000; }
+        /* La franja de 3px de arriba (donde corre la barra de progreso) va pintada de negro: vacía,
+           al bajar se veía la página pasando por detrás. */
+        .nav-wrap { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; border-top: 3px solid var(--black); }
         nav {
             display: flex; justify-content: space-between; align-items: stretch;
             padding: 0 2.5rem; min-height: 64px; background: rgba(8,8,8,0.96);
@@ -193,12 +195,16 @@
         .cat-search-hint { color: var(--gray); font-size: 0.72rem; margin-top: 0.6rem; letter-spacing: 0.2px; }
 
         /* ─── FILTROS (chips) ─── */
+        /* Dos filas: arriba las LÍNEAS (siempre iguales) y, abajo y aparte, las SUBCATEGORÍAS de la
+           línea elegida (si tiene). Antes los subfiltros se metían en la misma fila y empujaban al
+           resto de las líneas a otro renglón: no se entendía qué era línea y qué era subcategoría. */
         .cat-filters {
             position: sticky; top: 67px; z-index: 500; max-width: 1680px; margin: 0 auto;
-            padding: 0.9rem 3rem; display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;
+            padding: 0.9rem 3rem;
             background: rgba(8,8,8,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--line);
         }
+        .flt-row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
         .cat-filters .flt-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-right: 0.4rem; }
         .chip {
             font-family: 'Montserrat', sans-serif; font-size: 0.76rem; font-weight: 600;
@@ -207,11 +213,13 @@
         }
         .chip:hover { border-color: var(--orange); color: var(--orange); }
         .chip.active { background: var(--orange); color: #000; border-color: var(--orange); }
-        /* Subfiltros de ProLine: ocultos hasta que se elige la línea ProLine, aparecen al costado */
-        .flt-divider { width: 1px; align-self: stretch; min-height: 22px; background: rgba(255,255,255,0.15); margin: 0 0.35rem; }
-        .cat-subfilters { display: none; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-        .cat-subfilters.show { display: inline-flex; animation: subfltIn 0.28s ease; }
-        @keyframes subfltIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        /* Fila de subcategorías: solo con una línea que las tenga elegida. */
+        .flt-subrow { gap: 0.5rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,102,0,0.18); animation: subfltIn 0.25s ease; }
+        .flt-subrow[hidden] { display: none; }
+        @keyframes subfltIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        .flt-sublabel { display: inline-flex; align-items: center; gap: 0.45rem; margin-right: 0.3rem; white-space: nowrap; font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+        .flt-sublabel strong { color: var(--orange); font-weight: 800; }
+        .flt-sublabel svg { width: 14px; height: 14px; stroke: var(--orange); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
         .subchip {
             font-family: 'Montserrat', sans-serif; font-size: 0.72rem; font-weight: 600;
             padding: 0.4rem 0.85rem; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14);
@@ -430,15 +438,18 @@
             .cat-hero::after { height: 80px; }
             .cat-wrap { padding: 1rem 1.15rem 3.5rem; }
 
-            /* Una sola fila que se desliza con el dedo, en vez de 4 filas fijas. */
-            .cat-filters {
-                padding: 0.6rem 1.15rem; gap: 0.45rem;
-                flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+            /* Cada fila (líneas / subcategorías) se desliza con el dedo por su cuenta, en vez de
+               apilarse en 4 filas fijas. */
+            .cat-filters { padding: 0.6rem 0; }
+            .flt-row {
+                gap: 0.45rem; padding: 0 1.15rem;
+                flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; scroll-padding: 0 1.15rem;
             }
-            .cat-filters::-webkit-scrollbar { display: none; }
+            .flt-row::-webkit-scrollbar { display: none; }
             .cat-filters .flt-label { display: none; }
-            .cat-subfilters { flex-wrap: nowrap; }
-            .chip, .subchip, .flt-divider { flex-shrink: 0; }
+            .flt-subrow { margin-top: 0.55rem; padding-top: 0.55rem; }
+            .flt-sublabel { font-size: 0.56rem; letter-spacing: 1.2px; margin-right: 0.1rem; }
+            .chip, .subchip, .flt-sublabel { flex-shrink: 0; }
             .chip { font-size: 0.72rem; padding: 0.42rem 0.85rem; }
 
             .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
@@ -548,8 +559,12 @@
 
 <!-- FILTROS (chips, se llenan dinámicamente) -->
 <div class="cat-filters" id="cat-filters">
-    <span class="flt-label">Filtrar por línea</span>
-    <button class="chip active" data-filter="all">Todas</button>
+    <div class="flt-row" id="flt-cats">
+        <span class="flt-label">Filtrar por línea</span>
+        <button class="chip active" data-filter="all">Todas</button>
+    </div>
+    <!-- Subcategorías de la línea elegida (ProLine: grupo muscular; Aeróbica: importadas…) -->
+    <div class="flt-row flt-subrow" id="flt-subs" hidden></div>
 </div>
 
 <!-- CONTENIDO -->
@@ -669,10 +684,18 @@
     const norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
     const esc = (s) => (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-    // ProLine se subdivide por grupo muscular (en este orden).
-    const SUBCATS_PROLINE = ['pectorales', 'piernas', 'brazos', 'hombros', 'espalda', 'poleas', 'abdominales-lumbares'];
+    // Líneas que se dividen por SUBCATEGORÍA (la que se carga en el sistema). `orden`: en qué orden
+    // salen; `sinSub`: cómo se llama el grupo de las máquinas de esa línea sin subcategoría;
+    // `etiqueta`: el título de la fila de subfiltros. Solo se dividen las líneas de esta lista: la
+    // Aeróbica tiene la subcategoría «importadas» en el sistema (por el IVA), pero en la web se pidió
+    // verla toda junta. Si en la web hay UN solo grupo, la línea no se divide.
+    const SUBDIVISION = {
+        'linea proline': { etiqueta: 'Grupo', orden: ['pectorales', 'piernas', 'brazos', 'hombros', 'espalda', 'poleas', 'abdominales-lumbares'], sinSub: 'otros' },
+    };
     const NOMBRE_SUB = { 'abdominales-lumbares': 'Abdominales y Lumbares' };
     const nombreSub = (s) => NOMBRE_SUB[s] || (s.charAt(0).toUpperCase() + s.slice(1));
+    // Subcategorías de cada sección dividida: secId → { nombreCat, etiqueta, subs: [{id, nombre}] }.
+    const subsPorSec = {};
 
     // Todos los productos indexados por código (los llena initCatalogo). Lo usan el modal y el carrito.
     const productosPorCodigo = {};
@@ -680,7 +703,7 @@
 
     // Filtro por línea (chips / ?cat=... / mega menú). null = mostrar todo.
     let filtroCat = null;
-    let filtroSub = null;       // subfiltro de ProLine (grupo muscular). null = todos los grupos.
+    let filtroSub = null;       // subcategoría elegida dentro de la línea filtrada. null = todas.
     let aplicarBusqueda = null; // referencia a la función de filtrado del buscador
 
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
@@ -713,7 +736,6 @@
         const loading = document.getElementById('cat-loading');
         const errBox = document.getElementById('cat-error');
         const content = document.getElementById('cat-content');
-        const filtros = document.getElementById('cat-filters');
 
         let productos;
         try {
@@ -735,8 +757,6 @@
         productos.forEach((p) => { (porCat[p.categoria] = porCat[p.categoria] || []).push(p); });
 
         let chipsHtml = '';
-        const prolineSubs = []; // {id, nombre} de cada grupo muscular de ProLine, para los subchips
-        let prolineSecId = '';  // para colgar los subchips al lado del chip de ProLine
         CATS.forEach((cat) => {
             const items = porCat[cat.key];
             if (!items || !items.length) return;
@@ -751,23 +771,29 @@
                     <span class="tag">${cat.tag}</span>
                 </div>`;
 
+            // ¿Se divide por subcategoría? (ver SUBDIVISION)
+            const conf = SUBDIVISION[cat.key] || { orden: [], sinSub: 'otros' };
+            const porSub = {};
+            items.forEach((p) => { const k = p.subcategoria || conf.sinSub; (porSub[k] = porSub[k] || []).push(p); });
+            const grupos = Object.keys(porSub);
+            const dividir = !!SUBDIVISION[cat.key] && grupos.length > 1;
+
             let cuerpo;
-            if (cat.key === 'linea proline') {
-                // ProLine dividido en subsecciones por grupo muscular.
-                prolineSecId = secId;
-                const porSub = {};
-                items.forEach((p) => { const k = p.subcategoria || 'otros'; (porSub[k] = porSub[k] || []).push(p); });
-                const orden = SUBCATS_PROLINE.concat(Object.keys(porSub).filter((k) => !SUBCATS_PROLINE.includes(k)));
+            if (dividir) {
+                const resto = grupos.filter((k) => !conf.orden.includes(k) && k !== conf.sinSub).sort();
+                const orden = conf.orden.concat(resto, conf.orden.includes(conf.sinSub) ? [] : [conf.sinSub]);
+                const subs = [];
                 cuerpo = orden.map((sc) => {
                     const lista = porSub[sc];
                     if (!lista || !lista.length) return '';
                     const subId = `${secId}-${slug(sc)}`;
-                    prolineSubs.push({ id: subId, nombre: nombreSub(sc) });
+                    subs.push({ id: subId, nombre: nombreSub(sc) });
                     return `<div class="cat-subsection" id="${subId}">
                         <h3 class="cat-subtitle">${nombreSub(sc)} <span class="count">· ${lista.length}</span></h3>
                         <div class="cat-grid">${lista.map(cardHtml).join('')}</div>
                     </div>`;
                 }).join('');
+                subsPorSec[secId] = { nombreCat: cat.nombre, etiqueta: conf.etiqueta, subs };
             } else {
                 cuerpo = `<div class="cat-grid">${items.map(cardHtml).join('')}</div>`;
             }
@@ -778,22 +804,7 @@
             sec.innerHTML = header + cuerpo;
             content.appendChild(sec);
         });
-        filtros.insertAdjacentHTML('beforeend', chipsHtml);
-
-        // Subchips de ProLine (grupos musculares): ocultos hasta elegir la línea ProLine.
-        if (prolineSubs.length) {
-            const subHtml = '<span class="cat-subfilters" id="cat-subfilters">'
-                + '<span class="flt-divider"></span>'
-                + '<span class="flt-label">Grupo</span>'
-                + '<button class="subchip active" data-sub="all">Todos</button>'
-                + prolineSubs.map((s) => `<button class="subchip" data-sub="${s.id}">${s.nombre}</button>`).join('')
-                + '</span>';
-            // Van pegados al chip de ProLine, no al final de la barra: en celular
-            // la barra scrollea en horizontal y al final quedaban fuera de vista.
-            const chipProline = filtros.querySelector(`.chip[data-filter="${prolineSecId}"]`);
-            if (chipProline) chipProline.insertAdjacentHTML('afterend', subHtml);
-            else filtros.insertAdjacentHTML('beforeend', subHtml);
-        }
+        document.getElementById('flt-cats').insertAdjacentHTML('beforeend', chipsHtml);
 
         lucide.createIcons();
         setupBuscador();
@@ -816,7 +827,7 @@
 
     // ─── Chips de filtro por línea ───
     function setupChips() {
-        document.getElementById('cat-filters').addEventListener('click', (e) => {
+        document.getElementById('flt-cats').addEventListener('click', (e) => {
             const chip = e.target.closest('.chip');
             if (!chip) return;
             const f = chip.dataset.filter;
@@ -825,29 +836,47 @@
         });
     }
 
-    // ─── Subchips de ProLine (grupo muscular) ───
+    // ─── Subchips (subcategorías de la línea elegida, en la fila de abajo) ───
     function setupSubchips() {
-        const bar = document.getElementById('cat-subfilters');
-        if (!bar) return;
-        bar.addEventListener('click', (e) => {
+        document.getElementById('flt-subs').addEventListener('click', (e) => {
             const chip = e.target.closest('.subchip');
             if (!chip) return;
             setSubFiltro(chip.dataset.sub);
-            const el = document.getElementById('cat-linea-proline');
-            if (el) window.scrollTo({ top: el.offsetTop - 120, behavior: 'smooth' });
+            irAlCatalogo();
         });
     }
 
-    // Muestra solo el grupo elegido dentro de ProLine (o todos si es "Todos").
+    // Arma la fila de subcategorías de la línea elegida, o la esconde si no tiene.
+    function pintarSubfiltros() {
+        const fila = document.getElementById('flt-subs');
+        const info = filtroCat && subsPorSec[filtroCat];
+        if (!info) { fila.hidden = true; fila.innerHTML = ''; return; }
+        fila.innerHTML = `<span class="flt-sublabel"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><strong>${info.nombreCat}</strong> · ${info.etiqueta}</span>`
+            + '<button class="subchip active" data-sub="all">Todos</button>'
+            + info.subs.map((s) => `<button class="subchip" data-sub="${s.id}">${s.nombre}</button>`).join('');
+        fila.hidden = false;
+        fila.scrollLeft = 0;
+    }
+
+    // Muestra solo la subcategoría elegida dentro de la línea filtrada (o todas si es "Todos").
     function setSubFiltro(sub, skipApply) {
         filtroSub = (sub && sub !== 'all') ? sub : null;
         document.querySelectorAll('.subchip').forEach((c) => {
             c.classList.toggle('active', filtroSub ? c.dataset.sub === filtroSub : c.dataset.sub === 'all');
         });
-        document.querySelectorAll('#cat-linea-proline .cat-subsection').forEach((s) => {
+        document.querySelectorAll('.cat-subsection').forEach((s) => {
             s.classList.toggle('subfiltered-out', !!filtroSub && s.id !== filtroSub);
         });
+        mostrarChipActivo('flt-subs', '.subchip.active');
         if (!skipApply && aplicarBusqueda) aplicarBusqueda();
+    }
+
+    // En celular cada fila de filtros se desliza de costado: que el botón elegido quede a la vista.
+    function mostrarChipActivo(filaId = 'flt-cats', selector = '.chip.active') {
+        const fila = document.getElementById(filaId);
+        const chip = fila && fila.querySelector(selector);
+        if (!chip || fila.scrollWidth <= fila.clientWidth) return;
+        fila.scrollTo({ left: chip.offsetLeft - (fila.clientWidth - chip.offsetWidth) / 2, behavior: 'smooth' });
     }
 
     // ─── Mega menú: cada línea filtra y baja al catálogo ───
@@ -961,12 +990,10 @@
         document.querySelectorAll('.cat-section').forEach((sec) => {
             sec.classList.toggle('filtered-out', !!filtroCat && sec.id !== filtroCat);
         });
-        // Los subchips de ProLine solo aparecen cuando esa línea está seleccionada.
-        const subBar = document.getElementById('cat-subfilters');
-        if (subBar) {
-            if (filtroCat === 'cat-linea-proline') subBar.classList.add('show');
-            else { subBar.classList.remove('show'); setSubFiltro(null, true); }
-        }
+        // Al cambiar de línea se arranca con todas sus subcategorías, en la fila de abajo.
+        setSubFiltro(null, true);
+        pintarSubfiltros();
+        mostrarChipActivo();
         // Evitamos que alguna sección quede invisible por la animación de aparición.
         document.querySelectorAll('.cat-section.reveal').forEach((s) => s.classList.add('visible'));
         // Actualizamos la URL para poder compartir el link filtrado.
