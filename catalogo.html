@@ -241,11 +241,13 @@
         /* ─── SECCIÓN ─── */
         .cat-section { margin-top: 3.5rem; scroll-margin-top: 130px; }
         .cat-section.filtered-out, .cat-section.search-hidden { display: none; }
+        #cat-content > .cat-section:first-child,
+        #cat-content > .cat-section:nth-child(1 of :not(.filtered-out, .search-hidden)) { margin-top: 0.5rem; }
         .cat-item.hidden { display: none; }
         .cat-section-head { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 1.6rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,102,0,0.14); }
-        .cat-section-head h2 { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.2px; }
-        .cat-section-head .count { color: var(--gray); font-size: 0.9rem; font-weight: 400; }
-        .cat-section-head .tag { margin-left: auto; font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); }
+        .cat-section-head h2 { white-space: nowrap; font-size: 1.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.2px; }
+        .cat-section-head .count { color: var(--gray); font-size: 0.9rem; font-weight: 400; letter-spacing: 0; }
+        .cat-section-head .tag { margin-left: auto; text-align: right; line-height: 1.35; font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); }
 
         /* Subsecciones (ProLine dividido por grupo muscular) */
         .cat-subsection { margin-top: 2.4rem; scroll-margin-top: 130px; }
@@ -434,6 +436,9 @@
             .cat-hero { padding: 6rem 1.15rem 2.2rem; }
             .cat-hero::after { height: 80px; }
             .cat-wrap { padding: 1rem 1.15rem 3.5rem; }
+            .cat-section-head { align-items: center; }
+            .cat-section-head h2 { font-size: 1.25rem; }
+            .cat-section-head .tag { font-size: 0.68rem; letter-spacing: 1.2px; }
 
             /* Cada fila (líneas / subcategorías) se desliza con el dedo por su cuenta, en vez de
                apilarse en 4 filas fijas. */
@@ -758,8 +763,7 @@
 
             const header = `
                 <div class="cat-section-head">
-                    <h2>${cat.nombre}</h2>
-                    <span class="count">· ${items.length}</span>
+                    <h2>${cat.nombre} <span class="count">· ${items.length}</span></h2>
                     <span class="tag">${cat.tag}</span>
                 </div>`;
 
